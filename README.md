@@ -10,9 +10,11 @@ DNSPod 建立于2006年3月份，是一款免费智能DNS产品。 DNSPod可以�
 
 
 ###软件截图
-[![Screenshot-1.png](/Screenshot/Screenshot-1.png)](/Screenshot/Screenshot-1.png)
-[![Screenshot-2.png](/Screenshot/Screenshot-2.png)](/Screenshot/Screenshot-2.png)
-[![Screenshot-3.png](/Screenshot/Screenshot-3.png)](/Screenshot/Screenshot-3.png)
+[![Screenshot-1.png](/document/images/Screenshot-1.png)](/document/images/Screenshot-1.png)
+[![Screenshot-2.png](/document/images/Screenshot-2.png)](/document/images/Screenshot-2.png)
+[![Screenshot-3.png](/document/images/Screenshot-3.png)](/document/images/Screenshot-3.png)
+[![Screenshot-4.png](/document/images/Screenshot-4.png)](/document/images/Screenshot-5.png)
+[![Screenshot-5.png](/document/images/Screenshot-5.png)](/document/images/Screenshot-5.png)
 
 ### 联系我
 - e-mail:midoks@163.com
