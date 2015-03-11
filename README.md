@@ -1,4 +1,4 @@
-《DNSPOD iOS》
+《DNSPOD iOS Client》
 =================
 
 ### 说明
@@ -9,6 +9,12 @@ DNSPod 建立于2006年3月份，是一款免费智能DNS产品。 DNSPod可以�
 ### 文件说明
  - dnspod/DnsPodApi(DNSPOD API集成)
  - dnspod/AFNetworking(第三方操作库)
+ - dnspod/MBProgressHUD(提示特效)
+ - dnspod/SlideNavigationController(左滑控件)
+ - dnspod/MGSwipeTableCell(TableViewCell左滑空控件)
+ - dnspod/MDTableViewHAFPullRefresh(上下拉刷新控件)
+ - dnspod/UIDnsPod(页面控制)
+ - dnspod/Resource(资源文件)
 
 
 ### 合作开发人员
@@ -29,3 +35,6 @@ DNSPod 建立于2006年3月份，是一款免费智能DNS产品。 DNSPod可以�
 
 ### 捐助
 <img src="/document/images/donate.png" alt="donate.png" title="donate.png" width="200" />
+
+### 感谢
+感谢所有开源的软件
