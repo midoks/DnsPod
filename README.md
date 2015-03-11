@@ -8,6 +8,7 @@ DNSPod 建立于2006年3月份，是一款免费智能DNS产品。 DNSPod可以�
 
 ### 文件说明
  - dnspod/DnsPodApi(DNSPOD API集成)
+ - dnspod/AFNetworking(第三方操作库)
 
 
 ### 合作开发人员
