@@ -23,3 +23,4 @@ DNSPod 建立于2006年3月份，是一款免费智能DNS产品。 DNSPod可以�
 ### 捐助
 
 [![donate.png](/document/images/donate.png)](/document/images/donate.png)
+<img src="/document/images/donate.png" alt="donate.png" title="donate.png" width="200" />
