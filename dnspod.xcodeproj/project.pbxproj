@@ -49,6 +49,7 @@
 		825E1E6E1AA307BB00DCFB30 /* login_password.png in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E6C1AA307BB00DCFB30 /* login_password.png */; };
 		825E1E6F1AA307BB00DCFB30 /* login_password@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E6D1AA307BB00DCFB30 /* login_password@2x.png */; };
 		825E1E731AA30EFE00DCFB30 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E721AA30EFE00DCFB30 /* LaunchScreen.xib */; };
+		8273EEF81B8386AC00677109 /* dnspod_about_me.html in Resources */ = {isa = PBXBuildFile; fileRef = 8273EEF71B8386AC00677109 /* dnspod_about_me.html */; };
 		828E6D741A027BE6004160ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 828E6D731A027BE6004160ED /* libsqlite3.dylib */; };
 		82A979F81A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A979F71A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m */; };
 		82AE30051A5FEF0A00E836CC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AE30041A5FEF0A00E836CC /* MBProgressHUD.m */; };
@@ -157,6 +158,7 @@
 		825E1E6C1AA307BB00DCFB30 /* login_password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_password.png; sourceTree = "<group>"; };
 		825E1E6D1AA307BB00DCFB30 /* login_password@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_password@2x.png"; sourceTree = "<group>"; };
 		825E1E721AA30EFE00DCFB30 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		8273EEF71B8386AC00677109 /* dnspod_about_me.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dnspod_about_me.html; sourceTree = "<group>"; };
 		828E6D731A027BE6004160ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		82A979F61A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDnsPodRecordAddSelectViewController.h; sourceTree = "<group>"; };
 		82A979F71A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDnsPodRecordAddSelectViewController.m; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 		82BB695D1A374DDA005B2DE1 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				8273EEF71B8386AC00677109 /* dnspod_about_me.html */,
 				825E1E6C1AA307BB00DCFB30 /* login_password.png */,
 				825E1E6D1AA307BB00DCFB30 /* login_password@2x.png */,
 				825E1E681AA3037600DCFB30 /* login_user.png */,
@@ -531,7 +534,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = M;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = midoks;
 				TargetAttributes = {
 					82558BB419FD20ED0092064B = {
@@ -601,6 +604,7 @@
 				825CE81B1A5D70E00009974A /* grayArrow.png in Resources */,
 				82153EE41A9EDD3E00390A26 /* list_blue_icons.png in Resources */,
 				825CE8181A5D70E00009974A /* blackArrow@2x.png in Resources */,
+				8273EEF81B8386AC00677109 /* dnspod_about_me.html in Resources */,
 				82FB90AF1AA06DD7008AD283 /* about_icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -693,6 +697,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -762,6 +767,7 @@
 				INFOPLIST_FILE = dnspod/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dnspod;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -780,6 +786,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dnspod;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -799,6 +806,7 @@
 				);
 				INFOPLIST_FILE = dnspodTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dnspod.app/dnspod";
 			};
@@ -814,6 +822,7 @@
 				);
 				INFOPLIST_FILE = dnspodTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dnspod.app/dnspod";
 			};
