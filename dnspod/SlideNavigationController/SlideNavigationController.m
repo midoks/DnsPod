@@ -79,13 +79,14 @@ static SlideNavigationController *singletonInstance;
     CGRect rect = self.view.frame;
     UIDevice *device = [UIDevice currentDevice];
     UIDeviceOrientation orientation = device.orientation;
+    //UIDeviceOrientation
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
     {
         return rect.origin.x;
     }
     else
     {
-        if (UIInterfaceOrientationIsLandscape(orientation))
+        if (UIDeviceOrientationIsLandscape(orientation))
         {
             return (orientation == UIInterfaceOrientationLandscapeRight)
             ? rect.origin.y
@@ -112,7 +113,7 @@ static SlideNavigationController *singletonInstance;
     }
     else
     {
-        if (UIInterfaceOrientationIsLandscape(orientation))
+        if (UIDeviceOrientationIsLandscape(orientation))
         {
             return rect.size.height;
         }
@@ -174,7 +175,7 @@ static SlideNavigationController *singletonInstance;
         return rect;
     }
     
-    if (UIInterfaceOrientationIsLandscape(orientation))
+    if (UIDeviceOrientationIsLandscape(orientation))
     {
         // For some reasons in landscape below the status bar is considered y=0, but in portrait it's considered y=20
         rect.origin.x = (orientation == UIInterfaceOrientationLandscapeRight) ? 0 : STATUS_BAR_HEIGHT;
@@ -394,6 +395,20 @@ static SlideNavigationController *singletonInstance;
 
 #pragma mark - Private Methods -
 
+//-(UIInterfaceOrientation) toUIInterfaceOrientationType:(UIDeviceOrientation) to
+//{
+//    switch (to) {
+//        case UIDeviceOrientationUnknown:
+//            return 
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//    
+//
+//}
+
 - (void)updateMenuAnimation:(Menu)menu
 {
     //    CGFloat progress = (menu == MenuLeft)
@@ -421,7 +436,7 @@ static SlideNavigationController *singletonInstance;
     }
     else
     {
-        if (UIInterfaceOrientationIsLandscape(orientation))
+        if (UIDeviceOrientationIsLandscape(orientation))
         {
             rect.origin.x = 0;
             rect.origin.y = (orientation == UIInterfaceOrientationLandscapeRight) ? location : location*-1;
@@ -668,7 +683,7 @@ static SlideNavigationController *singletonInstance;
 {
     UIDevice *device = [UIDevice currentDevice];
     UIDeviceOrientation orientation = device.orientation;
-    return (UIInterfaceOrientationIsLandscape(orientation))
+    return (UIDeviceOrientationIsLandscape(orientation))
     ? self.landscapeSlideOffset
     : self.portraitSlideOffset;
 }

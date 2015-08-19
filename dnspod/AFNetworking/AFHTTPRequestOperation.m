@@ -47,6 +47,7 @@ static dispatch_group_t http_request_operation_completion_group() {
 @interface AFURLConnectionOperation ()
 @property (readwrite, nonatomic, strong) NSURLRequest *request;
 @property (readwrite, nonatomic, strong) NSURLResponse *response;
+
 @end
 
 @interface AFHTTPRequestOperation ()
@@ -58,6 +59,8 @@ static dispatch_group_t http_request_operation_completion_group() {
 
 @implementation AFHTTPRequestOperation
 @dynamic lock;
+@dynamic response;
+@dynamic request;
 
 - (instancetype)initWithRequest:(NSURLRequest *)urlRequest {
     self = [super initWithRequest:urlRequest];
@@ -70,15 +73,15 @@ static dispatch_group_t http_request_operation_completion_group() {
     return self;
 }
 
-- (void)setResponseSerializer:(AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
-    NSParameterAssert(responseSerializer);
-
-    [self.lock lock];
-    _responseSerializer = responseSerializer;
-    self.responseObject = nil;
-    self.responseSerializationError = nil;
-    [self.lock unlock];
-}
+//- (void)setResponseSerializer:(AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
+//    NSParameterAssert(responseSerializer);
+//
+//    [self.lock lock];
+//    _responseSerializer = responseSerializer;
+//    self.responseObject = nil;
+//    self.responseSerializationError = nil;
+//    [self.lock unlock];
+//}
 
 - (id)responseObject {
     [self.lock lock];

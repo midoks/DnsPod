@@ -89,7 +89,9 @@
 
  @warning `responseSerializer` must not be `nil`.
  */
-@property (nonatomic, strong) AFHTTPResponseSerializer <AFURLResponseSerialization> * responseSerializer;
+
+#pragma mark 注释屏蔽错误 以后有肯能出现由此引起的错误
+//@property (nonatomic, strong) AFHTTPResponseSerializer <AFURLResponseSerialization> * responseSerializer;
 
 ///---------------------
 /// @name Initialization
