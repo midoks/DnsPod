@@ -8,7 +8,9 @@
 
 #import "MAboutMeViewController.h"
 
-@interface MAboutMeViewController () <UIWebViewDelegate>
+#import <MessageUI/MFMailComposeViewController.h>
+
+@interface MAboutMeViewController () <UIWebViewDelegate, MFMailComposeViewControllerDelegate>
 {
     UIWebView *_webView;
 }
@@ -66,17 +68,42 @@ static MAboutMeViewController *MAboutMeViewControllerSingle;
 #pragma mark - webViewDelegate -
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    //NSLog(@"ll");
     [webView stringByEvaluatingJavaScriptFromString:@"rewrite();"];
 }
 
 
 #pragma mark 意见反馈
 -(void) adviseMe {
-    NSString *url = @"mailto:foo@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!";
-    [[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
+    //NSString *url = @"mailto:foo@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!";
+    //[[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
     
-
+    MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
+    mail.mailComposeDelegate = self;
+    [mail setToRecipients:[NSArray arrayWithObject:@"midoks@163.com"]];
+    [mail setCcRecipients:[NSArray arrayWithObject:@"627293072@qq.com"]];
+    [mail setBccRecipients:[NSArray arrayWithObject:@"renlairenwang@foxmail.com"]];
+    [mail setSubject:@"意见反馈"];
+    [mail setMessageBody:@"" isHTML:NO];
+    [self presentViewController:mail animated:YES completion:^{
+        //NSLog(@"present ok");
+    }];
 }
+
+#pragma mark - MFMailComposeViewControllerDelegate -
+-(void)mailComposeController:(MFMailComposeViewController *)controller
+         didFinishWithResult:(MFMailComposeResult)result
+                       error:(NSError *)error
+{
+    if (result == MFMailComposeResultSent) {
+        //NSLog(@"it`s away!");
+        [self showAlert:@"提示" msg:@"反馈成功!!!"];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        //NSLog(@"dismiss ok");
+    }];
+}
+
+
 
 @end

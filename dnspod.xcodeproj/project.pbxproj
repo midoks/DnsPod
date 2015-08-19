@@ -14,7 +14,6 @@
 		82153EE61A9F654C00390A26 /* list_red_icons.png in Resources */ = {isa = PBXBuildFile; fileRef = 82153EE51A9F654C00390A26 /* list_red_icons.png */; };
 		82153EEA1A9F736000390A26 /* dnspoder.png in Resources */ = {isa = PBXBuildFile; fileRef = 82153EE91A9F736000390A26 /* dnspoder.png */; };
 		823235271A3E68A30075B33C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 823235261A3E68A30075B33C /* SystemConfiguration.framework */; };
-		823235291A3E68ED0075B33C /* FIR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 823235281A3E68ED0075B33C /* FIR.framework */; };
 		82339A981A2B2F0400B5B04B /* MDnsPodRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82339A971A2B2F0400B5B04B /* MDnsPodRecordViewController.m */; };
 		824D3C7A1A40743F002D9AC6 /* menu-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 824D3C761A40743F002D9AC6 /* menu-button.png */; };
 		824D3C7B1A40743F002D9AC6 /* menu-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 824D3C771A40743F002D9AC6 /* menu-button@2x.png */; };
@@ -103,7 +102,6 @@
 		82153EE51A9F654C00390A26 /* list_red_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_red_icons.png; sourceTree = "<group>"; };
 		82153EE91A9F736000390A26 /* dnspoder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dnspoder.png; sourceTree = "<group>"; };
 		823235261A3E68A30075B33C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		823235281A3E68ED0075B33C /* FIR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIR.framework; path = dnspod/FIR.framework; sourceTree = "<group>"; };
 		82339A961A2B2F0400B5B04B /* MDnsPodRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDnsPodRecordViewController.h; sourceTree = "<group>"; };
 		82339A971A2B2F0400B5B04B /* MDnsPodRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDnsPodRecordViewController.m; sourceTree = "<group>"; };
 		824D3C761A40743F002D9AC6 /* menu-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-button.png"; sourceTree = "<group>"; };
@@ -212,7 +210,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				82B6117C1A62821E001A7638 /* MessageUI.framework in Frameworks */,
-				823235291A3E68ED0075B33C /* FIR.framework in Frameworks */,
 				823235271A3E68A30075B33C /* SystemConfiguration.framework in Frameworks */,
 				8211CE581A330F7400C64D7A /* QuartzCore.framework in Frameworks */,
 				828E6D741A027BE6004160ED /* libsqlite3.dylib in Frameworks */,
@@ -263,7 +260,6 @@
 			isa = PBXGroup;
 			children = (
 				82B6117B1A62821E001A7638 /* MessageUI.framework */,
-				823235281A3E68ED0075B33C /* FIR.framework */,
 				823235261A3E68A30075B33C /* SystemConfiguration.framework */,
 				8211CE571A330F7400C64D7A /* QuartzCore.framework */,
 				828E6D731A027BE6004160ED /* libsqlite3.dylib */,
@@ -539,6 +535,7 @@
 				TargetAttributes = {
 					82558BB419FD20ED0092064B = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = 462EP6445M;
 					};
 					82558BD019FD20ED0092064B = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -758,7 +755,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/dnspod",
@@ -769,6 +767,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dnspod;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -777,7 +776,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/dnspod",
@@ -788,6 +788,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dnspod;
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

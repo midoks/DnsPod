@@ -9,8 +9,6 @@
 #import "AppDelegate.h"
 #import "MLoginViewController.h"
 
-//BUG FIND
-#import <FIR/FIR.h>
 
 @interface AppDelegate ()
 
@@ -27,12 +25,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    sleep(3);
-    
-    //注册回调,寻找错误
-    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-    [FIR handleCrashWithKey:@"510c27d2fdea6bb82c9126020bfc8151"];//BUG FIND
+
     
     //设置window属性(在AppDelegate中定义window属性),初始化windows的大小和位置
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
