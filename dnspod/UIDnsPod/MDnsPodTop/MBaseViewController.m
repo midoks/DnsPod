@@ -20,8 +20,8 @@
     self->api = [[DnsPodApi alloc] init];
     self->file = [[DnsPodFile alloc] init];
     
-    if([self->file GetUser]){
-        NSDictionary *_p_user = [self->file GetUser][0];
+    if([self->file GetMainUser]){
+        NSDictionary *_p_user = [self->file GetMainUser][0];
         NSString *user = [_p_user objectForKey:@"user"];
         NSString *pwd = [_p_user objectForKey:@"pwd"];
         [self->api setValue:user password:pwd];

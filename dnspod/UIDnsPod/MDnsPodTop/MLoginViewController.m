@@ -9,6 +9,8 @@
 #import "MLoginViewController.h"
 #import "SlideNavigationController.h"
 
+
+
 @interface MLoginViewController ()
 
 
@@ -19,6 +21,8 @@
 
 @implementation MLoginViewController
 
+
+#pragma mark - 第一个视图(初始化的视图) -
 
 #pragma mark 视图初始化
 - (void)viewDidLoad {
@@ -109,8 +113,8 @@
     [self.view addSubview:_pwd];
     
     //检查已经登录的用户
-    if([self->file GetUser]){
-        NSDictionary  * _p_user = [self->file GetUser][0];
+    if([self->file GetMainUser]){
+        NSDictionary  * _p_user = [self->file GetMainUser][0];
         NSString *user = [_p_user objectForKey:@"user"];
         NSString *pwd = [_p_user objectForKey:@"pwd"];
         _user.text = user;
@@ -219,6 +223,8 @@ static MLoginViewController *MLoginViewControllerSingle;
         [self showAlert:@"提示" msg:@"密码不能为空"];
         return;
     }
+    
+    [self->api setValue:_c_user password:_c_pwd];
     [self hudWaitProgress:@selector(startCheckLogin)];
 }
 
@@ -226,11 +232,6 @@ static MLoginViewController *MLoginViewControllerSingle;
 - (void) startCheckLogin
 {
     sleep(2);
-    NSString *_c_user = _user.text.lowercaseString;
-    NSString *_c_pwd = _pwd.text;
-    
-    [self->api setValue:_c_user password:_c_pwd];
-    
     [self->api InfoVersion:^(AFHTTPRequestOperation *operation, id responseObject) {
         //NSLog(@"%@", responseObject);
         [self hudClose];
@@ -238,8 +239,8 @@ static MLoginViewController *MLoginViewControllerSingle;
         NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
         
         if (![self DTokenHandle:responseObject success:@selector(startCheckLogin)]) {
-            if([i  isEqual: @"1"]){
-                [self->file AddUser:_c_user password:_c_pwd];
+            if([i isEqual: @"1"]){
+                [self->file AddUser:[self->api getUserName] password:[self->api getUserPwd] isMain:@"1"];
                 [self showAlert:@"登录成功!!!" time:1.0 ok:@selector(goDnsPod)];
             }else{
                 [self showAlert:@"提示" msg:msg time:3.0f];

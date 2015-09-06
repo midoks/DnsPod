@@ -11,6 +11,8 @@
 
 @interface MLeftMenuViewController : MBaseViewController
 
+@property (nonatomic, strong) UITableView *tableView;
 
 + (MLeftMenuViewController*)sharedInstance;
+
 @end

@@ -18,19 +18,28 @@
 }
 
 #pragma mark 添加用户关键信息(一个)
--(Boolean)AddUser:(NSString *)username password:(NSString *)password;
+-(Boolean)AddUser:(NSString *)username password:(NSString *)password isMain:(NSString *)isMain;
 
 #pragma mark 添加多个用户信息(多个)
 -(void)AddMUser:(NSString *)username password:(NSString *)password;
 
-#pragma mark 获取用户数据
--(id)GetUser;
+#pragma mark 获取主账号信息
+-(id)GetMainUser;
+
+#pragma mark 获取所有账户信息
+-(id)GetUserList;
 
 #pragma mark 获取用户数据
 -(id)GetUser:(NSString *)UserName;
 
-#pragma mrark 删除用户(指定用户)
+#pragma mark 切换为主账户
+-(void)SwitchMainUser:(NSString *)mainUser;
+
+#pragma mark 删除用户(指定用户)
 -(void)DeleteUser:(NSString *)UserName;
+
+#pragma mark 删除用户(通过ID)
+-(void)DeleteUserById:(NSString *)userId;
 
 #pragma mark 清空用户(所有用户)
 -(void)ClearUser;

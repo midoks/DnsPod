@@ -46,6 +46,16 @@
     [self setArgs:@"login_password" value:self->_pwd];
 }
 
+#pragma mark 获取当前用户名
+-(NSString*)getUserName{
+    return self->_email;
+}
+
+#pragma mark 获取当前用户密码
+-(NSString*)getUserPwd{
+    return  self->_pwd;
+}
+
 #pragma mark 设置POST参数
 -(void)setArgs:(NSString *)key value:(NSString *)value
 {

@@ -213,7 +213,7 @@
 }
 
 
-#pragma mark - 控制方法 -
+#pragma mark - Private Method -
 
 //删除域名
 -(void)DeleteDomain

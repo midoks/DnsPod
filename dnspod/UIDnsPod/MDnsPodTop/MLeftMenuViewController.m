@@ -7,15 +7,16 @@
 //
 
 #import "MLeftMenuViewController.h"
+
 #import "MDnsPodViewController.h"
 #import "MLoginViewController.h"
 #import "MAboutMeViewController.h"
 #import "MAdviseViewController.h"
 #import "SlideNavigationController.h"
+#import "MUserListViewController.h"
 
-@interface MLeftMenuViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UITableView *tableView;
+@interface MLeftMenuViewController () <UITableViewDelegate, UITableViewDataSource, UIApplicationDelegate>
 
 @end
 
@@ -79,13 +80,14 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //NSLog(@"p");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"leftMenuCell"];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"leftMenuCell"];
         NSString *username = nil;
         //检查已经登录的用户
-        if([self->file GetUser]){
-            NSDictionary *_p_user = [self->file GetUser][0];
+        if([self->file GetMainUser]){
+            NSDictionary *_p_user = [self->file GetMainUser][0];
             NSString *user = [_p_user objectForKey:@"user"];
             username = [NSString stringWithFormat:@"账户信息:\r\n%@", user];
         }else{
@@ -145,7 +147,8 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        return nil;
+        return indexPath;
+        //return nil;
     }
     else
     {
@@ -158,7 +161,7 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIViewController *ds = nil;
     switch (indexPath.row) {
-        case 0:break;
+        case 0:[self goUserList];break;
         case 1:[self goMainDomainList];break;
         case 2:ds = [MAboutMeViewController sharedInstance];break;
         //case 3:[self sendMailText];return;
@@ -169,11 +172,10 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
     if (ds){[self push:ds];}
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
+#pragma mark - Private Methods -
+
+#pragma mark 跳页的功能
 - (void)push:(UIViewController *)vc
 {
     [[SlideNavigationController sharedInstance] popToRootAndSwitchToViewController:vc
@@ -181,6 +183,7 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
                                                                      andCompletion:nil];
 }
 
+#pragma mark 跳到域名列表的功能
 - (void)goMainDomainList
 {
     [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
@@ -189,31 +192,26 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
     }];
 }
 
-- (void)sendMailText
+#pragma mark 跳到用户列表页
+-(void)goUserList
 {
-    MAdviseViewController *ds = [MAdviseViewController sharedInstance];
-    [self push:ds];
-    //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto://deveprograms@apple.com"]];
-    //
-    //    NSString *subject = @"Message subject";
-    //    NSString *body = @"Message body";
-    //    NSString *address = @"test1@akosma.com";
-    //    NSString *cc = @"test2@akosma.com";
-    //    NSString *path = [NSString stringWithFormat:@"mailto:%@?cc=%@&subject=%@&body=%@", address, cc, subject, body];
-    //    NSURL *url = [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    //    [[UIApplication sharedApplication] openURL:url];
-    //
-    //
-    //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://blog.csdn.net/duxinfeng2010"]];
-    //    [self push:mailPicker];
+    //NSLog(@"ee");
+    [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
+        UIViewController *ds = [[MUserListViewController alloc] init];
+        [self push:ds];
+    }];
+
 }
 
+
+#pragma mark - AlertViewDelegate -
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     //程序退出
     if([alertView.title isEqualToString:@"你确定退出程序"] && (buttonIndex == 1))
     {
-        exit(0);
+        //exit(0);
+        [self exitApplication];
     }
     
     //注销账户
@@ -224,6 +222,20 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
         UIViewController* ds = [[MLoginViewController alloc] init];
         [self push:ds];
     }
+}
+
+#pragma mark - 应用退出 -
+-(void)exitApplication
+{
+    UIWindow *window = [UIApplication sharedApplication].windows[0];
+    
+    [UIView animateWithDuration:1.0f animations:^{
+        window.alpha = 0;
+        //window.frame = CGRectMake(0, 0, 0, 0);
+        //window.backgroundColor = [UIColor whiteColor];
+    } completion:^(BOOL finished) {
+        exit(0);
+    }];
 }
 
 //用户注销

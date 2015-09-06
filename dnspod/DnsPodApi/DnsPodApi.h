@@ -25,6 +25,10 @@
 #pragma mark - 初始化
 #pragma mark 初始化账户和密码
 - (void) setValue:(NSString *)email  password:(NSString *)pwd;
+#pragma mark 获取当前用户名
+-(NSString*)getUserName;
+#pragma mark 获取当前用户密码
+-(NSString*)getUserPwd;
 #pragma mark 设置POST参数
 - (void) setArgs:(NSString *)key value:(NSString *)value;
 

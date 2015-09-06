@@ -18,6 +18,7 @@
 		824D3C7A1A40743F002D9AC6 /* menu-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 824D3C761A40743F002D9AC6 /* menu-button.png */; };
 		824D3C7B1A40743F002D9AC6 /* menu-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 824D3C771A40743F002D9AC6 /* menu-button@2x.png */; };
 		824D3C7C1A40743F002D9AC6 /* SlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 824D3C791A40743F002D9AC6 /* SlideNavigationController.m */; };
+		825403B01B9C8EEC00B718E1 /* MUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 825403AF1B9C8EEC00B718E1 /* MUserInfoViewController.m */; };
 		82558BBB19FD20ED0092064B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558BBA19FD20ED0092064B /* main.m */; };
 		82558BC119FD20ED0092064B /* dnspod.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 82558BBF19FD20ED0092064B /* dnspod.xcdatamodeld */; };
 		82558BD819FD20ED0092064B /* dnspodTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558BD719FD20ED0092064B /* dnspodTests.m */; };
@@ -48,6 +49,7 @@
 		825E1E6E1AA307BB00DCFB30 /* login_password.png in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E6C1AA307BB00DCFB30 /* login_password.png */; };
 		825E1E6F1AA307BB00DCFB30 /* login_password@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E6D1AA307BB00DCFB30 /* login_password@2x.png */; };
 		825E1E731AA30EFE00DCFB30 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E721AA30EFE00DCFB30 /* LaunchScreen.xib */; };
+		826C406A1B9AE3D400C5E4A4 /* MUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 826C40691B9AE3D400C5E4A4 /* MUserListViewController.m */; };
 		8273EEF81B8386AC00677109 /* dnspod_about_me.html in Resources */ = {isa = PBXBuildFile; fileRef = 8273EEF71B8386AC00677109 /* dnspod_about_me.html */; };
 		828E6D741A027BE6004160ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 828E6D731A027BE6004160ED /* libsqlite3.dylib */; };
 		82A979F81A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A979F71A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m */; };
@@ -108,6 +110,8 @@
 		824D3C771A40743F002D9AC6 /* menu-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-button@2x.png"; sourceTree = "<group>"; };
 		824D3C781A40743F002D9AC6 /* SlideNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideNavigationController.h; sourceTree = "<group>"; };
 		824D3C791A40743F002D9AC6 /* SlideNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideNavigationController.m; sourceTree = "<group>"; };
+		825403AE1B9C8EEC00B718E1 /* MUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUserInfoViewController.h; sourceTree = "<group>"; };
+		825403AF1B9C8EEC00B718E1 /* MUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUserInfoViewController.m; sourceTree = "<group>"; };
 		82558BB519FD20ED0092064B /* dnspod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dnspod.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82558BB919FD20ED0092064B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		82558BBA19FD20ED0092064B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -156,6 +160,8 @@
 		825E1E6C1AA307BB00DCFB30 /* login_password.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_password.png; sourceTree = "<group>"; };
 		825E1E6D1AA307BB00DCFB30 /* login_password@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_password@2x.png"; sourceTree = "<group>"; };
 		825E1E721AA30EFE00DCFB30 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		826C40681B9AE3D400C5E4A4 /* MUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUserListViewController.h; sourceTree = "<group>"; };
+		826C40691B9AE3D400C5E4A4 /* MUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUserListViewController.m; sourceTree = "<group>"; };
 		8273EEF71B8386AC00677109 /* dnspod_about_me.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dnspod_about_me.html; sourceTree = "<group>"; };
 		828E6D731A027BE6004160ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		82A979F61A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDnsPodRecordAddSelectViewController.h; sourceTree = "<group>"; };
@@ -356,6 +362,7 @@
 		82558BF519FD21650092064B /* UIDnsPod */ = {
 			isa = PBXGroup;
 			children = (
+				826C40671B9ACA3A00C5E4A4 /* MUser */,
 				82B611951A639A00001A7638 /* MDnsPodTop */,
 				82558BF819FD21650092064B /* MDnsPodViewController.h */,
 				82558BF919FD21650092064B /* MDnsPodViewController.m */,
@@ -405,6 +412,17 @@
 				825CE8151A5D70E00009974A /* whiteArrow@2x.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		826C40671B9ACA3A00C5E4A4 /* MUser */ = {
+			isa = PBXGroup;
+			children = (
+				826C40681B9AE3D400C5E4A4 /* MUserListViewController.h */,
+				826C40691B9AE3D400C5E4A4 /* MUserListViewController.m */,
+				825403AE1B9C8EEC00B718E1 /* MUserInfoViewController.h */,
+				825403AF1B9C8EEC00B718E1 /* MUserInfoViewController.m */,
+			);
+			path = MUser;
 			sourceTree = "<group>";
 		};
 		82AE30021A5FEF0A00E836CC /* MBProgressHUD */ = {
@@ -625,6 +643,7 @@
 				82558BC119FD20ED0092064B /* dnspod.xcdatamodeld in Sources */,
 				82B611A31A639A00001A7638 /* MLeftMenuViewController.m in Sources */,
 				82DAEE3A1A4C12DD0030B9B6 /* MGSwipeTableCell.m in Sources */,
+				825403B01B9C8EEC00B718E1 /* MUserInfoViewController.m in Sources */,
 				825CE8161A5D70E00009974A /* MDTableViewHAFPullRefresh.m in Sources */,
 				82B611A21A639A00001A7638 /* MBaseViewController.m in Sources */,
 				82B611A11A639A00001A7638 /* MAdviseViewController.m in Sources */,
@@ -634,6 +653,7 @@
 				8208430F1A29B2AE00B8717E /* DnsPodApi.m in Sources */,
 				82558BFE19FD21650092064B /* AFSecurityPolicy.m in Sources */,
 				82D779071A56F3710099AB76 /* MDnsPodLogViewController.m in Sources */,
+				826C406A1B9AE3D400C5E4A4 /* MUserListViewController.m in Sources */,
 				82558C0419FD21650092064B /* MDnsPodViewController.m in Sources */,
 				82558BFB19FD21650092064B /* AFHTTPRequestOperationManager.m in Sources */,
 				82E6960A1A63D4280094180D /* MDnsPodDomainInfoViewController.m in Sources */,
@@ -763,7 +783,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = dnspod/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dnspod;
@@ -783,7 +803,7 @@
 					"$(PROJECT_DIR)/dnspod",
 				);
 				INFOPLIST_FILE = dnspod/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
