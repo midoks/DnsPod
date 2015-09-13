@@ -102,7 +102,7 @@
         cell.textLabel.text = @"测试";
         NSDictionary *obj = [_records objectAtIndex:indexPath.row];
         
-        cell.textLabel.text = [NSString stringWithFormat:@"纪录:%@", [obj objectForKey:@"name"]];//主要内容
+        cell.textLabel.text = [NSString stringWithFormat:@"记录:%@", [obj objectForKey:@"name"]];//主要内容
         cell.detailTextLabel.text = [obj objectForKey:@"value"];//记录值
         cell.textLabel.textColor = [UIColor blueColor];//颜色控制
         [cell setSelectedObj:obj];//保存对象
