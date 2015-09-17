@@ -23,6 +23,9 @@
 @property (nonatomic, strong) UITableView *table;
 //选择的域名信息
 @property (nonatomic, strong) NSDictionary *currentDomain;
+
+//UIRefreshControl
+@property (nonatomic, strong) UIRefreshControl *pullRefreshControll;
 @end
 
 @implementation MDnsPodViewController
@@ -41,7 +44,6 @@
     rightButton.tintColor = [UIColor whiteColor];
     
     self.navigationItem.rightBarButtonItem = rightButton;
-    [self GetLoadNewData];
     
     _domains = [[NSMutableArray alloc] init];
     
@@ -49,33 +51,60 @@
     _table = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     _table.dataSource = self;
     _table.delegate = self;
-    //_table.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_table];
+    
+    //下拉刷新
+    [self setupRefresh];
 }
 
-#pragma mark 重新获取数据,并刷新表
--(void)GetLoadNewData
-{
-    [self hudWaitProgress:@selector(HudGetLoadNewData)];
+
+
+#pragma mark 下拉刷新
+-(void)setupRefresh{
+    
+    _pullRefreshControll = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
+    _pullRefreshControll.backgroundColor = [UIColor colorWithRed: 239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1];
+    
+    [_pullRefreshControll addTarget:self action:@selector(pullReloadDomainListData:) forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_pullRefreshControll];
+    [_pullRefreshControll beginRefreshing];
+    
+    [self pullReloadDomainListData:_pullRefreshControll];
+
 }
 
--(void)HudGetLoadNewData
+#pragma mark - 下拉加载方式
+-(void) pullReloadDomainListData:(UIRefreshControl *)control
 {
-    sleep(1);
+    [self reloadDomainListData:^{
+        [control endRefreshing];
+    } fail:^{
+        [control endRefreshing];
+    }];
+}
+
+-(void)GetLoadNewData{
+    [self reloadDomainListData:nil fail:nil];
+}
+
+
+#pragma mark 加载数据
+-(void) reloadDomainListData:(void (^)())ok fail:(void (^)())fail
+{
     //获取域名数据
     [self->api DomainList:@"all" offset:@"0" length:nil group_id:nil keyword:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //NSLog(@"op:%@", operation);
-        [self hudClose];
+        
         NSMutableArray *t = [responseObject objectForKey:@"domains"];
         [_domains removeAllObjects];
         [_domains addObjectsFromArray:t];
         
+        ok();
         if ([_domains count] < 1){
             [self showAlert:@"提示" msg:@"没有域名,添加域名!"];
         }
         [_table reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self hudClose];
+        fail();
         [self showAlert:@"提示" msg:@"网络不畅通,下拉重新获取!"];
     }];
 }

@@ -48,12 +48,20 @@
 -(void)GetLoadNewData
 {
     //获取域名的记录
-    [self hudWaitProgress:@selector(HudGetLoadNewData)];
+    [self hudWaitProgress:@selector(reloadDomainListData)];
 }
 
--(void)HudGetLoadNewData
+
+#pragma mark - 下拉加载方式
+-(void) pullReloadDomainListData
 {
-    sleep(1);
+    [self reloadDomainListData];
+}
+
+
+#pragma mark 加载数据
+-(void) reloadDomainListData
+{
     [self->api RecordList:[_selectedDomain objectForKey:@"id"] offset:@"0" length:nil sub_domain:nil keyword:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self hudClose];
         //NSLog(@"_records:%@", responseObject);
