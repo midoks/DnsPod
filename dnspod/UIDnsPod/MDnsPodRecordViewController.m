@@ -97,6 +97,14 @@
     return 0;
 }
 
+#pragma mark 每行的高度
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50.0f;
+}
+
+
 #pragma mark 每一行的内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
