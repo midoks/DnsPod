@@ -70,7 +70,7 @@
     [_pullRefreshControll beginRefreshing];
     
     [self pullReloadDomainListData:_pullRefreshControll];
-
+    
 }
 
 #pragma mark - 下拉加载方式
@@ -84,7 +84,7 @@
 }
 
 -(void)GetLoadNewData{
-    [self reloadDomainListData:nil fail:nil];
+    [self pullReloadDomainListData:_pullRefreshControll];
 }
 
 

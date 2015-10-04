@@ -32,7 +32,7 @@
 		82558C0119FD21650092064B /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558BF219FD21650092064B /* AFURLResponseSerialization.m */; };
 		82558C0219FD21650092064B /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558BF419FD21650092064B /* AFURLSessionManager.m */; };
 		82558C0419FD21650092064B /* MDnsPodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558BF919FD21650092064B /* MDnsPodViewController.m */; };
-		82558C0919FD21CF0092064B /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558C0719FD21CF0092064B /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -ObjC -all_load"; }; };
+		82558C0919FD21CF0092064B /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558C0719FD21CF0092064B /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		82558C0B19FD31370092064B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 82558BBD19FD20ED0092064B /* AppDelegate.m */; };
 		825CE8161A5D70E00009974A /* MDTableViewHAFPullRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 825CE80C1A5D70E00009974A /* MDTableViewHAFPullRefresh.m */; };
 		825CE8171A5D70E00009974A /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 825CE80E1A5D70E00009974A /* blackArrow.png */; };

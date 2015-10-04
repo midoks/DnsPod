@@ -29,8 +29,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
-    NSLog(@"%@", NSHomeDirectory());
+    //打印app的文件目录,对调试有好处
+    //NSLog(@"%@", NSHomeDirectory());
     
     
     [SlideNavigationController sharedInstance].leftMenu = nil;
