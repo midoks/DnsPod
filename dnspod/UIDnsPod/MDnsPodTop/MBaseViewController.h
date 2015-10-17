@@ -12,11 +12,15 @@
 #import "SlideNavigationController.h"
 #import "MBProgressHUD.h"
 
+
+typedef void (^alertBlock)();
+
 @interface MBaseViewController : UIViewController
 {
 @private
     MBProgressHUD *HUD;
     SEL _callFunc;
+    alertBlock callAlertBlock;
 @public
     //DNSPOD的接口
     DnsPodApi *api;
@@ -24,10 +28,17 @@
     DnsPodFile *file;
 }
 
+
+
+#pragma mark 提示消息,取消或或成功执行block
+-(void)showAlert:(NSString *)title msg:(NSString *)msg ok:(void (^)())ok fail:(void (^)())fail;
 #pragma mark 提示并调用
 - (void)showAlert:(NSString *)msg time:(float)time ok:(SEL)ok;
+- (void)showAlert:(NSString *)msg time:(float)time block:(void (^)())block;
 #pragma mark 弹出消息
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg;
+#pragma mark 弹出消息
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg block:(void (^)())block;
 #pragma mark 弹出消息(可以设置时间)
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time;
 
@@ -53,6 +64,5 @@
 
 #pragma mark - D令牌统一处理 -
 -(BOOL)DTokenHandle:(id)info success:(SEL)success;
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 @end

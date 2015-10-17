@@ -7,6 +7,7 @@
 //
 
 #import "MUserListViewController.h"
+#import "MLoginViewController.h"
 
 @interface MUserListViewController () <UITableViewDataSource, UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 
@@ -23,8 +24,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
     
     //导航栏设置
     [self setTitleW:@"用户列表"];
@@ -51,6 +50,11 @@
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self._userTableData.count;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50.0f;
 }
 
 #pragma mark 每一行的内容
@@ -105,15 +109,32 @@
 
     self._selectedUser  = [self._userTableData objectAtIndex:indexPath.row];
     
-    UIActionSheet *domainActionSheet;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"账户管理" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
     
-    domainActionSheet = [[UIActionSheet alloc] initWithTitle:@"账户管理"
-                                                    delegate:self
-                                           cancelButtonTitle:@"取消"
-                                      destructiveButtonTitle:@"删除账户"
-                                           otherButtonTitles:@"查看账户", @"切换为当前", nil];
+    //删除帐户
+    UIAlertAction *userDelete = [UIAlertAction actionWithTitle:@"删除帐户" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self deleteUser];
+    }];
     
-    [domainActionSheet showInView:self.view];
+    //查看帐户
+    UIAlertAction *userInfo = [UIAlertAction actionWithTitle:@"查看帐户" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self seeSelectedUser];
+    }];
+    
+    //切换当前用户
+    UIAlertAction *userSwitch = [UIAlertAction actionWithTitle:@"切换为当前" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self switchSelectedUser];
+    }];
+    
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil];
+
+    
+    [alertController addAction:userDelete];
+    [alertController addAction:userInfo];
+    [alertController addAction:userSwitch];
+    [alertController addAction:cancel];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - AlertViewDelegate -
@@ -129,28 +150,14 @@
     }
     
     if ([alertView.title isEqual:@"你确定删除域名:"] && (buttonIndex == 1)) {
-        [self->file DeleteUserById:[self._selectedUser objectForKey:@"id"]];
-        [self showAlert:@"提示" msg:@"删除成功!!!" time:1.0f];
-        [self reloadGetUserData];
+        
     }
     
-
     
-    NSLog(@"%@", alertView.title);
-    NSLog(@"%ld", (long)buttonIndex);
+    //NSLog(@"%@", alertView.title);
+    //NSLog(@"%ld", (long)buttonIndex);
 }
 
-
-#pragma mark - UIActionSheet 代理方法 -
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 0:[self deleteUser];break;
-        case 1:[self seeSelectedUser];break;
-        case 2:[self switchSelectedUser];break;
-        default:break;
-    }
-}
 
 
 #pragma mark 添加用户数据
@@ -178,14 +185,18 @@
         NSString * i = [[responseObject objectForKey:@"status"] objectForKey:@"code"];
         NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
  
-        if (![self DTokenHandle:responseObject success:nil]) {
+        if(![i isEqual:@"1"]){
+            [self showAlert:@"提示" msg:msg];
+        }
+        
+        if (![self DTokenHandle:responseObject success:@selector(addUserDataChecked)]) {
             if([i isEqual: @"1"]){
+                [self showAlert:@"提示" msg:@"添加成功"];
                 [self->file AddUser:[self->api getUserName] password:[self->api getUserPwd] isMain:@"0"];
                 [self reloadGetUserData];
             }
         }
-        [self showAlert:@"提示" msg:msg time:1.0f];
-        
+     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hudClose];
         [self showAlert:@"提示" msg:@"网络不畅通" time:1.0f];
@@ -193,33 +204,74 @@
 }
 
 
-
 #pragma mark 添加用户数据的View
 -(void)addUser
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"添加用户"
-                                                    message:@"请输入你要添加的用户和密码"
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    //设置输入框的键盘类型
-    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeNamePhonePad];
-    [[alert textFieldAtIndex:0] setPlaceholder:@"请输入你的账户"];
-    [[alert textFieldAtIndex:1] setKeyboardType:UIKeyboardTypeNamePhonePad];
-    [[alert textFieldAtIndex:1] setPlaceholder:@"请输入你的密码"];
-    [alert setAlertViewStyle:UIAlertViewStyleLoginAndPasswordInput];
-    [alert show];
+    
+    UIAlertController *addUser = [UIAlertController alertControllerWithTitle:@"添加用户"
+                                                                     message:@"请输入你要添加的用户和密码"
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSString *user = addUser.textFields.firstObject.text;
+        NSString *pwd  = addUser.textFields.lastObject.text;
+        [self addUserData:user userPwd:pwd];
+    }];
+    
+    [addUser addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入账户";
+    }];
+    
+    [addUser addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入密码";
+        textField.secureTextEntry = true;
+    }];
+    
+    
+    [addUser addAction:cancal];
+    [addUser addAction:confirm];
+    
+    [self presentViewController:addUser animated:YES completion:^{
+    }];
 }
 
-//删除用户
+#pragma mark 删除用户
 -(void)deleteUser
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"你确定删除域名:"
-                                                    message:[self._selectedUser objectForKey:@"user"]
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    [alert show];
+    [self showAlert:@"你确定删除帐户:" msg:[self._selectedUser objectForKey:@"user"] ok:^{
+        [self deleteUserData];
+    } fail:^{}];
+}
+
+-(void)deleteUserData{
+    
+    [self->file DeleteUserById:[self._selectedUser objectForKey:@"id"]];
+    
+    [self showAlert:@"提示" msg:@"删除成功" block:^{
+        
+        [self reloadGetUserData];
+        
+        if ([self->file UserCount]<1){
+            MLoginViewController *loginPage = [[MLoginViewController alloc] init];
+            [self addChildViewController:loginPage];
+            [[SlideNavigationController sharedInstance] pushViewController:loginPage animated:YES];
+        }else{
+            id mainUser = [self->file GetMainUser];
+            //NSLog(@"%@", mainUser);
+            if(!mainUser){
+                NSString *userName = [[self._userTableData objectAtIndex:0] objectForKey:@"user"];
+                [self->file SwitchMainUser:userName];
+                [self showAlert:@"提示" msg:@"切换成功" ok:^{
+                    [self reloadGetUserData];
+                } fail:^{}];
+                
+            }
+        }
+    }];
+    
 }
 
 //切换当前用户
@@ -250,7 +302,6 @@
     
     [SlideNavigationController sharedInstance].leftMenu = [[MLeftMenuViewController alloc] init];
     [SlideNavigationController sharedInstance].enableSwipeGesture = YES;
-
 }
 
 

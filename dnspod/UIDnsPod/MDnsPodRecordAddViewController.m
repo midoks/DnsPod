@@ -187,88 +187,6 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
         NSArray *path = @[indexPath];
         [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationMiddle];
     }
-    
-    //添加记录 import
-    if([alertView.title isEqualToString:@"添加记录"] && (buttonIndex == 1)){
-        
-        NSString *recordName = [_data objectForKey:MDRECORDNAME];
-        if ([recordName isEqualToString:@"请填写"]) {
-            [self showAlert:@"提示" msg:@"主机记录请填写"];
-            return;
-        }
-        
-        NSString *recordValue = [_data objectForKey:MDRECORDVALUE];
-        if ([recordValue isEqualToString:@"请填写"]) {
-            [self showAlert:@"提示" msg:@"主机值请填写"];
-            return;
-        }
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-        
-        [self->api RecordCreate:[_selectedDomain objectForKey:@"id"]
-                     sub_domain:[_data objectForKey:MDRECORDNAME]
-                          value:[_data objectForKey:MDRECORDVALUE]
-                    record_type:[_data objectForKey:MDRECORDTYPE]
-                    record_line:[_data objectForKey:MDRECORDLINETYPE]
-                             mx:nil//[_data objectForKey:MDRECORDMX]
-                            ttl:[_data objectForKey:MDRECORDTLL]
-                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            self.navigationItem.rightBarButtonItem.enabled = YES;
-                            //NSLog(@"responseObject: %@", responseObject);
-                            NSString *code = [[responseObject objectForKey:@"status"] objectForKey:@"code"];
-                            NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
-                            if ([code isEqualToString:@"1"]) {
-                                [self showAlert:@"提示" msg:@"添加记录成功"];
-                                [[SlideNavigationController sharedInstance] popViewControllerAnimated:YES];
-                                [self.pvc GetLoadNewData];
-                            }else{
-                                [self showAlert:@"提示" msg:msg];
-                            }
-                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            self.navigationItem.rightBarButtonItem.enabled = YES;
-                            //NSLog(@"error: %@", error);
-                            [self showAlert:@"提示" msg:@"网络不畅通" time:2.0f];
-                        }];
-    }
-    
-    //修改记录
-    if([alertView.title isEqualToString:@"修改记录"] && (buttonIndex == 1))
-    {
-        NSString *recordName = [_data objectForKey:MDRECORDNAME];
-        if ([recordName isEqualToString:@"请填写"]) {
-            [self showAlert:@"提示" msg:@"主机记录请填写"];
-            return;
-        }
-        
-        NSString *recordValue = [_data objectForKey:MDRECORDVALUE];
-        if ([recordValue isEqualToString:@"请填写"]) {
-            [self showAlert:@"提示" msg:@"主机值请填写"];
-            return;
-        }
-
-        //修改值
-        [self->api RecordModify:[_selectedDomain objectForKey:@"id"]
-                      record_id:[_selectedRecord objectForKey:@"id"]
-                     sub_domain:[_data objectForKey:MDRECORDNAME]
-                    record_type:[_data objectForKey:MDRECORDTYPE]
-                    record_line:[_data objectForKey:MDRECORDLINETYPE]
-                          value:[_data objectForKey:MDRECORDVALUE]
-                             mx:nil
-                            ttl:[_data objectForKey:MDRECORDTLL]
-                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            NSString *message = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
-                            if([[[responseObject objectForKey:@"status"] objectForKey:@"code"] isEqualToString:@"1"]){
-                                [self showAlert:@"提示" msg:message];
-                                [[SlideNavigationController sharedInstance] popViewControllerAnimated:YES];
-                                [self.pvc GetLoadNewData];
-                            }else{
-                                [self showAlert:@"提示" msg:message];
-                            }
-                        }
-                        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            //NSLog(@"fail:%@", error);
-                            [self showAlert:@"提示" msg:@"网络不畅通" time:2.0f];
-                        }];
-    }
 }
 
 #pragma mark 修改主机记录
@@ -360,6 +278,12 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
     }];
 }
 
+-(void)backRecordList
+{
+    [[SlideNavigationController sharedInstance] popViewControllerAnimated:YES];
+    [self.pvc GetLoadNewData];
+}
+
 -(void)submit
 {
     if (_selectedRecord)
@@ -374,22 +298,91 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
 
 -(void)submitAdd
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"添加记录"
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    [alert show];
+    [self showAlert:@"添加记录" msg:nil ok:^{
+        
+        NSString *recordName = [_data objectForKey:MDRECORDNAME];
+        if ([recordName isEqualToString:@"请填写"]) {
+            [self showAlert:@"提示" msg:@"主机记录请填写"];
+            return;
+        }
+        
+        NSString *recordValue = [_data objectForKey:MDRECORDVALUE];
+        if ([recordValue isEqualToString:@"请填写"]) {
+            [self showAlert:@"提示" msg:@"主机值请填写"];
+            return;
+        }
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        
+        [self->api RecordCreate:[_selectedDomain objectForKey:@"id"]
+                     sub_domain:[_data objectForKey:MDRECORDNAME]
+                          value:[_data objectForKey:MDRECORDVALUE]
+                    record_type:[_data objectForKey:MDRECORDTYPE]
+                    record_line:[_data objectForKey:MDRECORDLINETYPE]
+                             mx:nil//[_data objectForKey:MDRECORDMX]
+                            ttl:[_data objectForKey:MDRECORDTLL]
+                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                            self.navigationItem.rightBarButtonItem.enabled = YES;
+                            //NSLog(@"responseObject: %@", responseObject);
+                            NSString *code = [[responseObject objectForKey:@"status"] objectForKey:@"code"];
+                            NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
+                            if ([code isEqualToString:@"1"]) {
+                                
+                                [self showAlert:msg time:1.8f block:^{
+                                    [self backRecordList];
+                                }];
+                            }else{
+                                [self showAlert:@"提示" msg:msg];
+                            }
+                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            self.navigationItem.rightBarButtonItem.enabled = YES;
+                            //NSLog(@"error: %@", error);
+                            [self showAlert:@"提示" msg:@"网络不畅通" time:2.0f];
+                        }];
+    } fail:^{}];
 }
 
 -(void)submitMod
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"修改记录"
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    [alert show];
+    [self showAlert:@"修改记录" msg:nil ok:^{
+        NSString *recordName = [_data objectForKey:MDRECORDNAME];
+        if ([recordName isEqualToString:@"请填写"]) {
+            [self showAlert:@"提示" msg:@"主机记录请填写"];
+            return;
+        }
+        
+        NSString *recordValue = [_data objectForKey:MDRECORDVALUE];
+        if ([recordValue isEqualToString:@"请填写"]) {
+            [self showAlert:@"提示" msg:@"主机值请填写"];
+            return;
+        }
+        
+        //修改值
+        [self->api RecordModify:[_selectedDomain objectForKey:@"id"]
+                      record_id:[_selectedRecord objectForKey:@"id"]
+                     sub_domain:[_data objectForKey:MDRECORDNAME]
+                    record_type:[_data objectForKey:MDRECORDTYPE]
+                    record_line:[_data objectForKey:MDRECORDLINETYPE]
+                          value:[_data objectForKey:MDRECORDVALUE]
+                             mx:nil
+                            ttl:[_data objectForKey:MDRECORDTLL]
+                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                            //NSLog(@"%@", responseObject);
+                            NSString *message = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
+                            if([[[responseObject objectForKey:@"status"] objectForKey:@"code"] isEqualToString:@"1"]){
+                                
+                                [self showAlert:message time:1.8f block:^{
+                                    [self backRecordList];
+                                }];
+                            }else{
+                                [self showAlert:@"提示" msg:message];
+                            }
+                        }
+                        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            //NSLog(@"fail:%@", error);
+                            [self showAlert:@"提示" msg:@"网络不畅通" time:2.0f];
+                        }];
+    } fail:^{}];
+    
 }
 
 @end

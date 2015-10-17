@@ -203,27 +203,6 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 
 }
 
-
-#pragma mark - AlertViewDelegate -
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    //程序退出
-    if([alertView.title isEqualToString:@"你确定退出程序"] && (buttonIndex == 1))
-    {
-        //exit(0);
-        [self exitApplication];
-    }
-    
-    //注销账户
-    if([alertView.title isEqualToString:@"你确定注销用户"] && (buttonIndex == 1))
-    {
-        [self clearCookies];
-        [self->file ClearUser];
-        UIViewController* ds = [[MLoginViewController alloc] init];
-        [self push:ds];
-    }
-}
-
 #pragma mark - 应用退出 -
 -(void)exitApplication
 {
@@ -242,12 +221,12 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 -(void)UserExt
 {
     [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"你确定注销用户"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定",nil];
-        [alert show];
+        [self showAlert:@"你确定注销用户" msg:@"" ok:^{
+            [self clearCookies];
+            [self->file ClearUser];
+            UIViewController* ds = [[MLoginViewController alloc] init];
+            [self push:ds];
+        } fail:^{}];
     }];
 }
 
@@ -255,12 +234,9 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 -(void)AppExt
 {
     [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"你确定退出程序"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定",nil];
-        [alert show];
+        [self showAlert:@"你确定退出程序" msg:@"" ok:^{
+            [self exitApplication];
+        } fail:^{}];
     }];
 }
 

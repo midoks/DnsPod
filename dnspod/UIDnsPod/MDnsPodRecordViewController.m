@@ -101,7 +101,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0f;
+    return 55.0f;
 }
 
 
@@ -148,7 +148,6 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.delegate = self;
     
-    
     return cell;
 }
 
@@ -156,93 +155,6 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-}
-
-#pragma mark - UIAlertViewDelegate Methods -
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    //删除记录
-    if([alertView.title isEqualToString:@"删除记录"] && (buttonIndex == 1))
-    {
-        NSString *value = [self.selectedCell.cell.selectedObj objectForKey:@"value"];
-        if ([value isEqual:@"f1g1ns1.dnspod.net."] || [value isEqual:@"f1g1ns2.dnspod.net."]) {
-            [self showAlert:@"提示" msg:@"此记录不能删除." time:2.0f];
-            return;
-        }
-        
-        NSString *domain_id = [_selectedDomain objectForKey:@"id"];
-        NSString *record_id = self.selectedCell.selectedId;
-        [self->api RecordRemove:domain_id
-                      record_id:record_id
-                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
-                            //NSLog(@"responseObject:%@", responseObject);
-                            
-                            if ([[[responseObject objectForKey:@"status"] objectForKey:@"code"] isEqual:@"1"]){
-                                [self GetLoadNewData];
-                                [self showAlert:@"提示" msg:msg time:2.0f];
-                            }else{
-                                [self showAlert:@"失败" msg:msg time:5.0f];
-                            }
-                            
-                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            [self showAlert:@"提示" msg:@"网络不畅通" time:5.0f];
-                        }];
-    }
-    
-    //更改记录状态
-    if ([alertView.title isEqualToString:@"更改记录状态"] && (buttonIndex == 1))
-    {
-        NSString *value = [self.selectedCell.cell.selectedObj objectForKey:@"value"];
-        if ([value isEqual:@"f1g1ns1.dnspod.net."] || [value isEqual:@"f1g1ns2.dnspod.net."]) {
-            [self showAlert:@"提示" msg:@"此记录不能修改状态." time:2.0f];
-            return;
-        }
-        
-        NSString *domain_id = [_selectedDomain objectForKey:@"id"];
-        NSString *record_id = self.selectedCell.selectedId;
-        NSString *status;
-        MGSwipeButton *btn = self.selectedCell.cell.rightButtons[self.selectedCell.index];
-        
-        if ([btn.titleLabel.text isEqualToString:@"已启用"]){
-            status = @"disable";
-        }else{
-            status = @"enable";
-        }
-        
-        [self->api RecordStatus:domain_id
-                      record_id:record_id
-                         status:status
-                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            if ([[[responseObject objectForKey:@"status"] objectForKey:@"code"] isEqual:@"1"])
-                            {
-                                [self showAlert:@"提示" msg:[[responseObject objectForKey:@"status"] objectForKey:@"message"]];
-                                [self GetLoadNewData];
-                            }else{
-                                NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
-                                [self showAlert:@"失败" msg:msg time:5.0f];
-                            }
-                            
-                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            [self showAlert:@"提示" msg:@"网络不畅通" time:5.0f];
-                        }];
-    }
-    
-    //修改
-    if([alertView.title isEqualToString:@"确定修改?"] && (buttonIndex == 1))
-    {
-        NSString *value = [self.selectedCell.cell.selectedObj objectForKey:@"value"];
-        if ([value isEqual:@"f1g1ns1.dnspod.net."] || [value isEqual:@"f1g1ns2.dnspod.net."]) {
-            [self showAlert:@"提示" msg:@"不能修改此记录." time:2.0f];
-            return;
-        }
-        
-        MDnsPodRecordAddViewController *mod = [[MDnsPodRecordAddViewController alloc] init];
-        mod.selectedDomain = _selectedDomain;
-        mod.selectedRecord = self.selectedCell.cell.selectedObj;
-        mod.pvc = self;
-        [[SlideNavigationController sharedInstance] pushViewController:mod animated:YES];
-    }
 }
 
 #pragma mark - Extends -
@@ -255,12 +167,11 @@
     if ( 0 == index ){
         NSString *selectedId = [cell.selectedObj objectForKey:@"id"];
         self.selectedCell = NSSelectedCell(cell, index, selectedId);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除记录"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定",nil];
-        [alert show];
+        
+        [self showAlert:@"删除记录" msg:nil ok:^{
+            [self recordDelete];
+        } fail:^{}];
+        
     }
     
     //设置启用
@@ -272,26 +183,25 @@
         }else{
             msg = @"是否要启用该记录?";
         }
+        
         NSString *selectedId = [cell.selectedObj objectForKey:@"id"];
         self.selectedCell = NSSelectedCell(cell, index, selectedId);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"更改记录状态"
-                                                        message:msg
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定",nil];
-        [alert show];
+        
+        [self showAlert:@"更改记录状态" msg:nil ok:^{
+            [self recordModStatus];
+        } fail:^{}];
+        
     }
     
     if(2 == index)
     {
         NSString *selectedId = [cell.selectedObj objectForKey:@"id"];
         self.selectedCell = NSSelectedCell(cell, index, selectedId);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"确定修改?"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定",nil];
-        [alert show];
+        
+        [self showAlert:@"确定修改?" msg:nil ok:^{
+            [self recordModVal];
+        } fail:^{}];
+        
     }
     return YES;
 }
@@ -332,6 +242,91 @@
         [result addObject:button];
     }
     return result;
+}
+
+
+#pragma mark 删除记录
+-(void)recordDelete
+{
+
+    NSString *value = [self.selectedCell.cell.selectedObj objectForKey:@"value"];
+    if ([value isEqual:@"f1g1ns1.dnspod.net."] || [value isEqual:@"f1g1ns2.dnspod.net."]) {
+        [self showAlert:@"提示" msg:@"此记录不能删除." time:2.0f];
+    }
+    
+    NSString *domain_id = [_selectedDomain objectForKey:@"id"];
+    NSString *record_id = self.selectedCell.selectedId;
+    [self->api RecordRemove:domain_id
+                  record_id:record_id
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
+                        //NSLog(@"responseObject:%@", responseObject);
+                        
+                        if ([[[responseObject objectForKey:@"status"] objectForKey:@"code"] isEqual:@"1"]){
+                            [self GetLoadNewData];
+                            [self showAlert:@"提示" msg:msg time:2.0f];
+                        }else{
+                            [self showAlert:@"失败" msg:msg time:5.0f];
+                        }
+                        
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        [self showAlert:@"提示" msg:@"网络不畅通" time:5.0f];
+                    }];
+    
+}
+
+#pragma mark 修改记录状态
+-(void)recordModStatus
+{
+    NSString *value = [self.selectedCell.cell.selectedObj objectForKey:@"value"];
+    if ([value isEqual:@"f1g1ns1.dnspod.net."] || [value isEqual:@"f1g1ns2.dnspod.net."]) {
+        [self showAlert:@"提示" msg:@"此记录不能修改状态." time:2.0f];
+        return;
+    }
+    
+    NSString *domain_id = [_selectedDomain objectForKey:@"id"];
+    NSString *record_id = self.selectedCell.selectedId;
+    NSString *status;
+    MGSwipeButton *btn = self.selectedCell.cell.rightButtons[self.selectedCell.index];
+    
+    if ([btn.titleLabel.text isEqualToString:@"已启用"]){
+        status = @"disable";
+    }else{
+        status = @"enable";
+    }
+    
+    [self->api RecordStatus:domain_id
+                  record_id:record_id
+                     status:status
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if ([[[responseObject objectForKey:@"status"] objectForKey:@"code"] isEqual:@"1"])
+                        {
+                            [self showAlert:@"提示" msg:[[responseObject objectForKey:@"status"] objectForKey:@"message"]];
+                            [self GetLoadNewData];
+                        }else{
+                            NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
+                            [self showAlert:@"失败" msg:msg time:5.0f];
+                        }
+                        
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        [self showAlert:@"提示" msg:@"网络不畅通" time:5.0f];
+                    }];
+}
+
+#pragma mark 修改记录值
+-(void)recordModVal
+{
+    NSString *value = [self.selectedCell.cell.selectedObj objectForKey:@"value"];
+    if ([value isEqual:@"f1g1ns1.dnspod.net."] || [value isEqual:@"f1g1ns2.dnspod.net."]) {
+        [self showAlert:@"提示" msg:@"不能修改此记录." time:2.0f];
+        return;
+    }
+    
+    MDnsPodRecordAddViewController *mod = [[MDnsPodRecordAddViewController alloc] init];
+    mod.selectedDomain = _selectedDomain;
+    mod.selectedRecord = self.selectedCell.cell.selectedObj;
+    mod.pvc = self;
+    [[SlideNavigationController sharedInstance] pushViewController:mod animated:YES];
 }
 
 #pragma mark 添加记录

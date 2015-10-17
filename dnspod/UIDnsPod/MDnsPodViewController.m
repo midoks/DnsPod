@@ -175,85 +175,81 @@
     
     _selectedDomain = obj;
     
+
     
-    UIActionSheet *domainActionSheet;
-    //检查是否为有效域名
-    NSString *ext_status = [_selectedDomain objectForKey:@"ext_status"];
-    if ([@"dnserror" isEqualToString:ext_status] || [@"notexist" isEqualToString:ext_status]) {//DNS错误
-        //[self showAlert:@"提示" msg:@"无效域名!!!"];
-        domainActionSheet = [[UIActionSheet alloc] initWithTitle:@"域名管理(无效域名)"
-                                                        delegate:self
-                                               cancelButtonTitle:@"取消"
-                                          destructiveButtonTitle:@"删除域名"
-                                               otherButtonTitles:@"域名信息",nil];
-        [domainActionSheet showInView:self.view];
-        return;
-    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"域名管理"
+                                                                             message:@""
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
     
     
-    /**
-     *  @func 跳入域名管理页
-     *  @explain 在1.2.1使用的方法
-     *  点击使用 UIActionSheet 进行管理
-     *  需要使用 UIActionSheetDelegate
-     */
+    UIAlertAction *deleteDomain = [UIAlertAction actionWithTitle:@"删除域名" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [self showAlert:@"你确定删除域名:" msg:[_selectedDomain objectForKey:@"name"] ok:^{
+            [self hudWaitProgress:@selector(alertDeleteDomain)];
+        } fail:^{}];
+
+    }];
     
+    
+    //域名记录
+    UIAlertAction *recordList = [UIAlertAction actionWithTitle:@"记录管理" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSString *ext_status = [_selectedDomain objectForKey:@"ext_status"];
+        if ([@"dnserror" isEqualToString:ext_status] || [@"notexist" isEqualToString:ext_status]) {
+            [self DomainInfo];
+        }else{
+            MDnsPodRecordViewController *ds = [[MDnsPodRecordViewController alloc] init];
+            ds.selectedDomain = _selectedDomain;
+            [[SlideNavigationController sharedInstance] pushViewController:ds animated:YES];
+        }
+    }];
+    
+    //域名日志
+    UIAlertAction *domainLog = [UIAlertAction actionWithTitle:@"记录日志" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        MDnsPodLogViewController *ds = [MDnsPodLogViewController sharedInstance];
+        ds.selectedDomain = _selectedDomain;
+        [[SlideNavigationController sharedInstance] pushViewController:ds animated:YES];
+        
+    }];
+    
+    //域名信息
+    UIAlertAction *domainInfo = [UIAlertAction actionWithTitle:@"记录信息" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    
+        [self DomainInfo];
+    }];
+    
+    //域名状态
+    NSString *statusName;
     if ([[_selectedDomain objectForKey:@"status"] isEqual:@"enable"]) {
-        domainActionSheet = [[UIActionSheet alloc] initWithTitle:@"域名管理"
-                                                        delegate:self
-                                               cancelButtonTitle:@"取消"
-                                          destructiveButtonTitle:@"删除域名"
-                                               otherButtonTitles:@"记录管理", @"查看日志", @"已启用", @"域名信息", nil];
-    }else if([[_selectedDomain objectForKey:@"status"] isEqual:@"pause"]){
-        domainActionSheet = [[UIActionSheet alloc] initWithTitle:@"域名管理"
-                                                        delegate:self
-                                               cancelButtonTitle:@"取消"
-                                          destructiveButtonTitle:@"删除域名"
-                                               otherButtonTitles:@"记录管理", @"查看日志", @"已禁用", @"域名信息", nil];
+        statusName = @"已启用";
+    }else{
+        statusName = @"已禁用";
+    }
+    UIAlertAction *domainStatus = [UIAlertAction actionWithTitle:statusName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self DomainEnable];
+        
+    }];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil];
+    
+    if ([[_selectedDomain objectForKey:@"ext_status"] isEqual:@"dnserror"]) {
+        [alertController addAction:deleteDomain];
+        [alertController addAction:domainInfo];
+        [alertController addAction:cancel];
+    }else{
+        [alertController addAction:deleteDomain];
+        [alertController addAction:recordList];
+        [alertController addAction:domainLog];
+        [alertController addAction:domainStatus];
+        [alertController addAction:domainInfo];
+        [alertController addAction:cancel];
     }
     
-    //[domainActionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-    [domainActionSheet showInView:self.view];
-    
-    /**
-     *  @func 跳入域名管理页 (已经删除)
-     *  @explain 在1.1.9使用的方法
-     *  点击进入 MDnsPodCollectionViewController 进行管理
-     */
-    //    MDnsPodCollectionViewController *ds = [[MDnsPodCollectionViewController alloc] initWithNibName:@"MDnsPodCollectionViewController" bundle:nil];
-    //    ds.selectedDomain = obj;
-    //    ds.pvc = self;
-    //    [[SlideNavigationController sharedInstance] pushViewController:ds animated:YES];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
-
-
-//UIActionSheet 代理方法
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 0:[self DeleteDomain];break;
-        case 1:[self recordList];break;
-        case 2:[self DomainLog];break;
-        case 3:[self DomainEnable];break;
-        case 4:[self DomainInfo];break;
-        default:break;
-    }
-    //NSLog(@"%d", buttonIndex);
-}
-
 
 #pragma mark - Private Method -
-
-//删除域名
--(void)DeleteDomain
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"你确定删除域名:"
-                                                    message:[_selectedDomain objectForKey:@"name"]
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    [alert show];
-}
 
 //删除域名域名
 -(void)alertDeleteDomain
@@ -274,50 +270,21 @@
                     }];
 }
 
-//记录管理
--(void)recordList
-{
-    NSString *ext_status = [_selectedDomain objectForKey:@"ext_status"];
-    if ([@"dnserror" isEqualToString:ext_status] || [@"notexist" isEqualToString:ext_status]) {
-        [self DomainInfo];
-    }else{
-        MDnsPodRecordViewController *ds = [[MDnsPodRecordViewController alloc] init];
-        ds.selectedDomain = _selectedDomain;
-        [[SlideNavigationController sharedInstance] pushViewController:ds animated:YES];
-    }
-    
-}
-
-//解析日记
--(void)DomainLog
-{
-    NSString *ext_status = [_selectedDomain objectForKey:@"ext_status"];
-    if ([@"dnserror" isEqualToString:ext_status] || [@"notexist" isEqualToString:ext_status]) {
-    }else{
-        MDnsPodLogViewController *ds = [MDnsPodLogViewController sharedInstance];
-        ds.selectedDomain = _selectedDomain;
-        [[SlideNavigationController sharedInstance] pushViewController:ds animated:YES];
-    }
-}
-
 //域名支持
 -(void)DomainEnable
 {
     if ([[_selectedDomain objectForKey:@"status"] isEqual:@"enable"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"你确定禁用域名:"
-                                                        message:[_selectedDomain objectForKey:@"name"]
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定",nil];
-        [alert show];
+        
+        
+        [self showAlert:@"你确定禁用域名:" msg:[_selectedDomain objectForKey:@"name"] ok:^{
+            [self hudWaitProgress:@selector(alertStopDomain)];
+        } fail:nil];
     }else if([[_selectedDomain objectForKey:@"status"] isEqual:@"pause"])
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"你确定启用域名:"
-                                                        message:[_selectedDomain objectForKey:@"name"]
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定",nil];
-        [alert show];
+        
+        [self showAlert:@"你确定启用域名:" msg:[_selectedDomain objectForKey:@"name"] ok:^{
+            [self hudWaitProgress:@selector(alertStartDomain)];
+        } fail:nil];
     }
 }
 
@@ -370,33 +337,25 @@
 #pragma mark 添加域名
 -(void)AddDomain
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"添加域名"
-                                                    message:@"请输入你要添加的域名(不带www) 例:cachecha.com"
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    //设置输入框的键盘类型
-    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeNamePhonePad];
-    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [alert show];
-}
-
-#pragma mark - AlertView判断 -
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    //点击确认后[添加域名处理]
-    if([alertView.title isEqual:@"添加域名"] && (buttonIndex == 1))
-    {
-        NSString *domain = [[alertView textFieldAtIndex:0] text];
+    UIAlertController *alertAdd = [UIAlertController alertControllerWithTitle:@"添加域名"
+                                                                         message:@"请输入你要添加的域名(不带www) 例:cachecha.com"
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        //NSLog(@"fail");
+    }];
+    
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        if ([domain isEqual:@""]) {
+        NSString * domainValue = alertAdd.textFields.firstObject.text;
+        
+        if ([domainValue isEqual:@""]) {
             [self showAlert:@"提示" msg:@"添加域名不能为空!!!"];
             return;
         }
         
-        
-        [self->api DomainCreate:domain success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            //NSLog(@"%@", responseObject);
+        [self->api DomainCreate:domainValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
             if([responseObject objectForKey:@"domain"]){
                 [self showAlert:@"添加成功" msg:[[responseObject objectForKey:@"domain"] objectForKey:@"domain"] time:3.0f];
             }else if ([responseObject objectForKey:@"status"]){
@@ -407,24 +366,17 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self showAlert:@"提示" msg:@"网络不畅通" time:3.0f];
         }];
-    }
+        
+    }];
     
-    //删除域名
-    if([alertView.title isEqualToString:@"你确定删除域名:"] && (buttonIndex == 1))
-    {
-        //[self showAlert:@"提示" msg:@"删除功能" time:3.0];
-        [self hudWaitProgress:@selector(alertDeleteDomain)];
-    }
+    [alertAdd addAction:cancal];
+    [alertAdd addAction:confirm];
     
-    //禁用域名
-    if ([alertView.title isEqualToString:@"你确定禁用域名:"] && (buttonIndex == 1)) {
-        [self hudWaitProgress:@selector(alertStopDomain)];
-    }
+    [alertAdd addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"域名(cachecha.com)";
+    }];
     
-    //启用域名
-    if([alertView.title isEqualToString:@"你确定启用域名:"] && (buttonIndex == 1)){
-        [self hudWaitProgress:@selector(alertStartDomain)];
-    }
+    [self presentViewController:alertAdd animated:YES completion:nil];
 }
 
 @end

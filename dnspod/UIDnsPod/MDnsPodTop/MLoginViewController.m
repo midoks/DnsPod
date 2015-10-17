@@ -165,7 +165,7 @@ static MLoginViewController *MLoginViewControllerSingle;
 +(MLoginViewController *)sharedInstance
 {
     if (!MLoginViewControllerSingle) {
-        return [[self alloc] init];
+        MLoginViewControllerSingle = [[self alloc] init];
     }
     return MLoginViewControllerSingle;
 }
@@ -231,7 +231,7 @@ static MLoginViewController *MLoginViewControllerSingle;
 #pragma mark 检查是否登录
 - (void) startCheckLogin
 {
-    sleep(2);
+    //sleep(2);
     [self->api InfoVersion:^(AFHTTPRequestOperation *operation, id responseObject) {
         //NSLog(@"%@", responseObject);
         [self hudClose];
@@ -241,7 +241,7 @@ static MLoginViewController *MLoginViewControllerSingle;
         if (![self DTokenHandle:responseObject success:@selector(startCheckLogin)]) {
             if([i isEqual: @"1"]){
                 [self->file AddUser:[self->api getUserName] password:[self->api getUserPwd] isMain:@"1"];
-                [self showAlert:@"登录成功!!!" time:1.0 ok:@selector(goDnsPod)];
+                [self showAlert:@"登录成功" time:1.0 ok:@selector(goDnsPod)];
             }else{
                 [self showAlert:@"提示" msg:msg time:3.0f];
             }

@@ -51,7 +51,7 @@
 		825E1E731AA30EFE00DCFB30 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E721AA30EFE00DCFB30 /* LaunchScreen.xib */; };
 		826C406A1B9AE3D400C5E4A4 /* MUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 826C40691B9AE3D400C5E4A4 /* MUserListViewController.m */; };
 		8273EEF81B8386AC00677109 /* dnspod_about_me.html in Resources */ = {isa = PBXBuildFile; fileRef = 8273EEF71B8386AC00677109 /* dnspod_about_me.html */; };
-		828E6D741A027BE6004160ED /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 828E6D731A027BE6004160ED /* libsqlite3.dylib */; };
+		827D57951BC6C9020021ACBE /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 827D57941BC6C9020021ACBE /* libsqlite3.0.tbd */; };
 		82A979F81A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A979F71A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m */; };
 		82AE30051A5FEF0A00E836CC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AE30041A5FEF0A00E836CC /* MBProgressHUD.m */; };
 		82AF83021A0A59D300D3D484 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AF82FF1A0A59D300D3D484 /* GTMBase64.m */; };
@@ -163,7 +163,7 @@
 		826C40681B9AE3D400C5E4A4 /* MUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUserListViewController.h; sourceTree = "<group>"; };
 		826C40691B9AE3D400C5E4A4 /* MUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUserListViewController.m; sourceTree = "<group>"; };
 		8273EEF71B8386AC00677109 /* dnspod_about_me.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dnspod_about_me.html; sourceTree = "<group>"; };
-		828E6D731A027BE6004160ED /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		827D57941BC6C9020021ACBE /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		82A979F61A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDnsPodRecordAddSelectViewController.h; sourceTree = "<group>"; };
 		82A979F71A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDnsPodRecordAddSelectViewController.m; sourceTree = "<group>"; };
 		82AE30031A5FEF0A00E836CC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -215,10 +215,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				827D57951BC6C9020021ACBE /* libsqlite3.0.tbd in Frameworks */,
 				82B6117C1A62821E001A7638 /* MessageUI.framework in Frameworks */,
 				823235271A3E68A30075B33C /* SystemConfiguration.framework in Frameworks */,
 				8211CE581A330F7400C64D7A /* QuartzCore.framework in Frameworks */,
-				828E6D741A027BE6004160ED /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,10 +265,10 @@
 		82558BAC19FD20ED0092064B = {
 			isa = PBXGroup;
 			children = (
+				827D57941BC6C9020021ACBE /* libsqlite3.0.tbd */,
 				82B6117B1A62821E001A7638 /* MessageUI.framework */,
 				823235261A3E68A30075B33C /* SystemConfiguration.framework */,
 				8211CE571A330F7400C64D7A /* QuartzCore.framework */,
-				828E6D731A027BE6004160ED /* libsqlite3.dylib */,
 				82558BB719FD20ED0092064B /* dnspod */,
 				82558BD419FD20ED0092064B /* dnspodTests */,
 				82558BB619FD20ED0092064B /* Products */,
@@ -783,7 +783,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = dnspod/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = dnspod;
@@ -803,7 +803,7 @@
 					"$(PROJECT_DIR)/dnspod",
 				);
 				INFOPLIST_FILE = dnspod/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";

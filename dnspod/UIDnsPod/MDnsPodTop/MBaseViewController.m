@@ -9,7 +9,7 @@
 #import "MBaseViewController.h"
 #import "MLeftMenuViewController.h"
 
-@interface MBaseViewController () <MBProgressHUDDelegate, UIAlertViewDelegate>
+@interface MBaseViewController () <MBProgressHUDDelegate, UIAlertViewDelegate, UIPopoverPresentationControllerDelegate>
 @end
 
 @implementation MBaseViewController
@@ -48,6 +48,30 @@
     self.title = title;
 }
 
+#pragma mark 提示消息,取消或或成功执行block
+-(void)showAlert:(NSString *)title msg:(NSString *)msg ok:(void (^)())ok fail:(void (^)())fail
+{
+    UIAlertController *alertDelete = [UIAlertController alertControllerWithTitle:title
+                                                                         message:msg
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        if(fail){
+            fail();
+        }
+    }];
+    
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ok();
+    }];
+    
+    [alertDelete addAction:cancal];
+    [alertDelete addAction:confirm];
+
+    [self presentViewController:alertDelete animated:YES completion:nil];
+    
+}
+
 #pragma mark 提示并调用
 - (void)showAlert:(NSString *)msg time:(float)time ok:(SEL)ok
 {
@@ -55,30 +79,63 @@
     [self performSelector:ok withObject:nil afterDelay:time];
 }
 
+#pragma mark 提示并调用block
+- (void)showAlert:(NSString *)msg time:(float)time block:(void (^)())block
+{
+    [self showAlert:@"提示" msg:msg time:time block:block];
+}
+
 #pragma mark 弹出消息
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg
 {
-    [self showAlert:notice msg:msg time:2.0f];
+    [self showAlert:notice msg:msg time:2.0f block:nil];
+}
+
+#pragma mark 弹出消息
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg block:(void (^)())block
+{
+    [self showAlert:notice msg:msg time:2.0f block:block];
 }
 
 #pragma mark 弹出消息
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time
 {
-    UIAlertView *promptAlert = [[UIAlertView alloc] initWithTitle:notice message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:notice message:msg preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:alert animated:YES completion:nil];
+    
     [NSTimer scheduledTimerWithTimeInterval:time
                                      target:self
                                    selector:@selector(timerFireMethod:)
-                                   userInfo:promptAlert
+                                   userInfo:alert
                                     repeats:NO];
-    [promptAlert show];
 }
 
+
+#pragma mark 弹出消息并回调block
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time block:(void (^)())block
+{
+    callAlertBlock = block;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:notice message:msg preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:alert animated:YES completion:^{
+        
+        [NSTimer scheduledTimerWithTimeInterval:time
+                                         target:self
+                                       selector:@selector(timerFireMethod:)
+                                       userInfo:block
+                                        repeats:NO];
+        
+    }];
+
+}
+
+#pragma mark 定时消失
 - (void)timerFireMethod:(NSTimer*)theTimer
 {
-    //NSLog(@"弹出框");
-    UIAlertView *promptAlert = (UIAlertView*)[theTimer userInfo];
-    [promptAlert dismissWithClickedButtonIndex:0 animated:NO];
-    promptAlert = NULL;
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (callAlertBlock) {
+            callAlertBlock();
+        }
+    }];
 }
 
 #pragma mark 退出程序
@@ -196,8 +253,11 @@
     NSString * i = [[info objectForKey:@"status"] objectForKey:@"code"];
     NSString *msg = [[info objectForKey:@"status"] objectForKey:@"message"];
     if([i isEqual:@"50"] || [i isEqual:@"52"]){
-        [self showAlert:@"提示" msg:msg time:0.5f];
-        [self performSelector:@selector(DTokenHandleAlert) withObject:nil afterDelay:0.5f];
+    
+        [self showAlert:@"提示" msg:msg time:0.5 block:^{
+            [self performSelector:@selector(DTokenHandleAlert) withObject:nil afterDelay:0.2f];
+        }];
+        
         return true;
     }
     return false;
@@ -205,31 +265,40 @@
 
 -(void)DTokenHandleAlert
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"输入D令牌验证码"
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    //设置输入框的键盘类型
-    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeNumberPad];
-    [[alert textFieldAtIndex:0] becomeFirstResponder];
-    [alert show];
+    UIAlertController *tokenAlert = [UIAlertController alertControllerWithTitle:@"输入D令牌验证码"
+                                                                   message:@""
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){}];
+    
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSString *number = tokenAlert.textFields.firstObject.text;
+        [self loginIn:number];
+        
+    }];
+    
+    [tokenAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"6位或8位数字验证码";
+    }];
+    
+    [tokenAlert addAction:cancel];
+    [tokenAlert addAction:ok];
+    
+    [self presentViewController:tokenAlert animated:YES completion:^{}];
+    
 }
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+#pragma mark 验证number
+-(void)loginIn:(NSString *)number
 {
-    //输入D令牌验证码
-    if([alertView.title isEqualToString:@"输入D令牌验证码"] && (buttonIndex == 1))
-    {
-        NSString *number = [[alertView textFieldAtIndex:0] text];
-        [self->api setArgs:@"login_code" value:number];
-        [self->api setArgs:@"login_remember" value:@"yes"];
-        [self performSelector:_callFunc withObject:nil afterDelay:0.5];
+    [self->api setArgs:@"login_code" value:number];
+    [self->api setArgs:@"login_remember" value:@"yes"];
+    
+    if(_callFunc){
+        [self performSelector:_callFunc withObject:nil afterDelay:0.2f];
     }
+    
 }
-
-
 
 
 @end
