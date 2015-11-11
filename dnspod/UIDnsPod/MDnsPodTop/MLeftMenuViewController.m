@@ -242,14 +242,7 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 
 //清空所有cookie
 -(void)clearCookies
-{
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://dnsapi.cn/Info.Version"]
-                                             cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
-                                         timeoutInterval:3];
-    [NSURLConnection sendSynchronousRequest:request
-                          returningResponse:nil
-                                      error:nil];
-    
+{    
     NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *cookie in [cookieJar cookies]) {
         [cookieJar deleteCookie:cookie];

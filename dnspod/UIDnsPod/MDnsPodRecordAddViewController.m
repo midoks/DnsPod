@@ -223,19 +223,37 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
     [self ModRecordCommonValue:MDRECORDTLL value:value notice:@"请输入或修改TLL" tag:5];
 }
 
+#pragma mark 修改record记录
 -(void)ModRecordCommonValue:(NSString *)name value:(NSString *)value notice:(NSString *)notice tag:(NSInteger)tag;
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:name
-                                                    message:notice
-                                                   delegate:self
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    alert.tag = tag;
-    //设置输入框的键盘类型
-    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
-    [alert textFieldAtIndex:0].text = value;
-    [alert show];
+    
+    UIAlertController *alertRecord = [UIAlertController alertControllerWithTitle:@"修改记录值"
+                                                                         message:@"请输入或修改记录值"
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *value = alertRecord.textFields.firstObject.text;
+
+        [_data setObject:value forKey:MDRECORDVALUE];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:tag inSection:0];
+        NSArray *path = @[indexPath];
+        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationLeft];
+        
+    }];
+    
+    [alertRecord addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = value;
+        textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    }];
+    
+
+    [alertRecord addAction:cancal];
+    [alertRecord addAction:confirm];
+    
+    [self presentViewController:alertRecord animated:YES completion:nil];
 }
 
 #pragma mark 选择记录类型
