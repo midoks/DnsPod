@@ -272,6 +272,7 @@ static MDnsPodLogViewController *MDnsPodLogViewControllerSingle;
                              [_refreshHAFView mdFootFinish];
                          }else{
                              [_logs addObjectsFromArray:tmp_logs];
+                  
                          }
                      }else{
                          [self showAlert:@"提示" msg:message];

@@ -300,5 +300,20 @@
     
 }
 
+#pragma mark - 获取TouchID值 -
+-(BOOL)getTouchIdValue
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL v = [userDefaults boolForKey:@"touchIdValue"];
+    return v;
+}
+
+#pragma mark - 设置TouchID值 -
+-(void) setTouchIdValue:(BOOL)b{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:b forKey:@"touchIdValue"];
+    [userDefaults synchronize];
+}
+
 
 @end

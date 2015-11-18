@@ -8,6 +8,7 @@
 
 #import "MLoginViewController.h"
 #import "SlideNavigationController.h"
+#import "MCommon.h"
 
 
 
@@ -24,129 +25,204 @@
 
 #pragma mark - 第一个视图(初始化的视图) -
 
+-(void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    //NSLog(@"yes");
+    //self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+    
+    //self.navigationController.navigationBarHidden = YES;
+    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1]];
+}
+
+-(void) viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    //NSLog(@"no");
+    //self.navigationController.navigationBarHidden = NO;
+    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:8.0/255.0 green:57.0/255.0 blue:134.0/255.0 alpha:1]];
+}
+
 #pragma mark 视图初始化
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    [SlideNavigationController sharedInstance].leftMenu = nil;
+    self.view.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1];
+    self.title = @"米帮手";
+    
+    
+    UIBarButtonItem  *nullButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationItem.rightBarButtonItem = nullButton;
+    self.navigationItem.leftBarButtonItem = nullButton;
+    
+    //[MCommon getTouchIdValue]
+    if ([MCommon getTouchIdValue]) {
+        [self touchIdLogin];
+        [self initTouchID];
+    } else {
+        [self initView];
+    }
     
     //打印app的文件目录,对调试有好处
     //NSLog(@"%@", NSHomeDirectory());
+}
+
+#pragma mark - initTouchID -
+-(void) initTouchID
+{
+    _touchIdButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+    _touchIdButton.center = CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height*0.35);
+    [_touchIdButton setBackgroundImage:[UIImage imageNamed:@"login_touch_id"] forState:UIControlStateNormal];
+    [_touchIdButton addTarget:self action:@selector(touchIdLogin) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_touchIdButton];
     
+    UILabel *explain = [[UILabel alloc] initWithFrame:CGRectMake(0, _touchIdButton.frame.size.height + _touchIdButton.frame.origin.y + 5, self.view.frame.size.width, 40.0f)];
+    explain.text = @"点击进行指纹解锁";
+    explain.textAlignment = NSTextAlignmentCenter;
+    explain.font = [UIFont systemFontOfSize:10.0f];
+    explain.textColor = [UIColor colorWithRed:86.0/255.0 green:171.0/255.0 blue:228.0/255.0 alpha:1];
+    [self.view addSubview:explain];
     
-    [SlideNavigationController sharedInstance].leftMenu = nil;
+    _switchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 40)];
     
+    [_switchButton setTitleColor:[UIColor colorWithRed:86.0/255.0 green:171.0/255.0 blue:228.0/255.0 alpha:1] forState:UIControlStateNormal];
+    [_switchButton setTitle:@"重新登陆" forState:UIControlStateNormal];
+    _switchButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
     
-    UIBarButtonItem  *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"退出" style:UIBarButtonItemStylePlain target:self action:@selector(ext)];
+    [_switchButton addTarget:self action:@selector(switchLogin) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_switchButton];
+}
+
+#pragma mark - 指纹登陆 -
+-(void)touchIdLogin
+{
+    [MCommon touchConfirm:@"登陆验证" success:^(BOOL success) {
+        if(success){
+            [MCommon asynTask:^{
+                [self goDnsPod];
+            }];
+            
+        }else{
+            [MCommon asynTask:^{
+                [self showAlert:@"提示" msg:@"指纹验证失败!" time:1];
+            }];
+        }
+    } fail:^{
+        [self showAlert:@"提示" msg:@"你的设备不支持!"];
+    }];
     
-    UIBarButtonItem  *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"登陆" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
-    rightButton.tintColor = [UIColor whiteColor];
-    leftButton.tintColor = [UIColor whiteColor];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    self.navigationItem.leftBarButtonItem = leftButton;
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+}
+
+#pragma mark - 登陆 -
+-(void) switchLogin
+{
+    [self showAlert:@"重新登陆" msg:@"要清空所有信息?" ok:^{
+        [_touchIdButton removeFromSuperview];
+        [_switchButton removeFromSuperview];
+        [self->file ClearUser];
+        [MCommon setTouchIdValue:NO];
+        [self initView];
+    } fail:^{
+    }];
+}
+
+#pragma mark - initView初始化 -
+-(void) initView
+{
     
     _viewX = self.view.bounds.size.width/2;
+    
     _logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dnspoder"]];
     _logo.frame = CGRectMake(100, 100, 150, 150);
     _logo.center = CGPointMake(_viewX, 160);
-    _logo.backgroundColor = [UIColor clearColor];
     _logo.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:_logo];
     
     
+    //    NSLog(@"%@", _logo);
+    //    NSLog(@"%f", _logo.frame.origin.y);
+    //    NSLog(@"%f", _logo.frame.origin.y + _logo.frame.size.height);
+    //    NSLog(@"%f", _logo.frame.origin.y + _logo.frame.size.height + 45.0f/2);
+    
+    //工具
     UIToolbar *mdtextfield = [self setInputUIToolbar];
     
-//    UILabel *_userlefttext = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 40.0f)];
-//    _userlefttext.textAlignment = NSTextAlignmentCenter;
-//    _userlefttext.font = [UIFont systemFontOfSize:15.0f];
-//    _userlefttext.text = @"用户";
-    
-    UIView *login_user = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40.0f, 40.0f)];
+    //填写用户名
+    UIView *login_user = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60.0f, 40.0f)];
     UIImageView *image = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 23.0f, 23.0f)];
     image.image = [UIImage imageNamed:@"login_user"];
     image.center = login_user.center;
     [login_user addSubview:image];
     
-    //添加手机号码输入框
-    _user = [[UITextField alloc] initWithFrame:CGRectMake(_viewX, 320, 230, 40)];
-    _user.center = CGPointMake(_viewX, 280);
+    
+    _user = [[UITextField alloc] initWithFrame:CGRectMake(_viewX, 260, self.view.frame.size.width, 45.0f)];
+    _user.center = CGPointMake(_viewX, _logo.frame.origin.y + _logo.frame.size.height + 45.0f/2);
     _user.keyboardType = UIKeyboardTypeEmailAddress;
     _user.keyboardAppearance = UIKeyboardAppearanceLight;
-    _user.borderStyle = UITextBorderStyleRoundedRect;
+    _user.borderStyle = UITextBorderStyleNone;
     _user.font = [UIFont systemFontOfSize:14.0f];
-    //_user.leftView = _userlefttext;
-    _user.leftView = login_user;
     _user.leftViewMode = UITextFieldViewModeAlways;
+    _user.leftView = login_user;
     _user.inputAccessoryView = mdtextfield;
-    _user.placeholder = @"请输入你的用户名";
+    _user.backgroundColor = [UIColor whiteColor];
+    _user.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _user.placeholder = @"请输入你的账户";
     _user.delegate = self;
     [self.view addSubview:_user];
     
-    
-//    UILabel *_pwdlefttext = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 40.0f)];
-//    _pwdlefttext.textAlignment = NSTextAlignmentCenter;
-//    _pwdlefttext.font = [UIFont systemFontOfSize:15.0f];
-//    _pwdlefttext.text = @"密码";
-    
-    
-    UIView *login_password = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40.0f, 40.0f)];
+    //添加密码输入框
+    UIView *login_password = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60.0f, 40.0f)];
     image = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 23.0f, 23.0f)];
     image.image = [UIImage imageNamed:@"login_password"];
     image.center = login_password.center;
     [login_password addSubview:image];
     
-    
-    //添加密码输入框
-    _pwd = [[UITextField alloc] initWithFrame:CGRectMake(20, 390, 230, 40)];
-    _pwd.center = CGPointMake(_viewX, 325);
+    _pwd = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 45.0f)];
+    _pwd.center = CGPointMake(_viewX, _user.frame.origin.y + _user.frame.size.height + 45.0f/2 + 1);
     _pwd.keyboardType = UIKeyboardTypeNamePhonePad;
-    _pwd.borderStyle = UITextBorderStyleRoundedRect;
+    _pwd.borderStyle = UITextBorderStyleNone;
     _pwd.font = [UIFont systemFontOfSize:14.0f];
+    _pwd.backgroundColor = [UIColor whiteColor];
     _pwd.placeholder = @"请输入你的密码";
     _pwd.leftViewMode = UITextFieldViewModeAlways;
-    //_pwd.leftView = _pwdlefttext;
+    _pwd.clearButtonMode = UITextFieldViewModeWhileEditing;
     _pwd.leftView = login_password;
     _pwd.inputAccessoryView = mdtextfield;
     _pwd.secureTextEntry = YES;
     _pwd.delegate = self;
     [self.view addSubview:_pwd];
     
+    
+    
+    _loginButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, self.view.frame.size.width * 0.95, 40.0f)];
+    _loginButton.center = CGPointMake(_viewX, _pwd.frame.origin.y + _pwd.frame.size.height + 40.0f/2 + 10);
+    
+    [_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
+    [_loginButton setBackgroundColor:[UIColor colorWithRed:8.0/255.0 green:57.0/255.0 blue:134.0/255.0 alpha:0.6]];
+    
+    [_loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_loginButton];
+    
+    
     //检查已经登录的用户
     if([self->file GetMainUser]){
+        
         NSDictionary  * _p_user = [self->file GetMainUser][0];
         NSString *user = [_p_user objectForKey:@"user"];
         NSString *pwd = [_p_user objectForKey:@"pwd"];
         _user.text = user;
         _pwd.text = pwd;
+        
+        [_loginButton setTitle:@"正在登陆中..." forState:UIControlStateNormal];
+        //[self showAlert:@"登录成功" time:1.0 ok:@selector(goDnsPod)];
         [self login];
     }
     
-    MLoginViewControllerSingle = self;
     
     //监控键盘的高度
     _KeyboardHeight = 264;
-    //[self registerForKeyboardNotifications];
-    
-    
-    //self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:10.0/255.0 green:58.0/255.0 blue:135.0/255.0 alpha:1];
-    
-    //[self.navigationController.navigationBar setTintColor:[UIColor redColor]];
-    
-    //    UIImage *backgroundImage = [self imageWithColor:[UIColor redColor]];
-    //    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-    
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor redColor]}];
-    
-//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-//    titleLabel.backgroundColor = [UIColor grayColor];
-//    titleLabel.font = [UIFont boldSystemFontOfSize:20];
-//    titleLabel.textColor = [UIColor greenColor];
-//    titleLabel.textAlignment = NSTextAlignmentCenter;
-//    titleLabel.text = @"登陆";
-//    self.navigationItem.titleView = titleLabel;
 }
 
+#pragma mark - 通过颜色生成图片 -
 - (UIImage *)imageWithColor:(UIColor *)color {
     CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
@@ -161,19 +237,6 @@
     return image;
 }
 
-static MLoginViewController *MLoginViewControllerSingle;
-+(MLoginViewController *)sharedInstance
-{
-    if (!MLoginViewControllerSingle) {
-        MLoginViewControllerSingle = [[self alloc] init];
-    }
-    return MLoginViewControllerSingle;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - 旋转相关 -
 - (BOOL)shouldAutorotate
@@ -181,30 +244,43 @@ static MLoginViewController *MLoginViewControllerSingle;
     return NO;
 }
 
--(void) viewWillLayoutSubviews
+//-(void) viewWillLayoutSubviews
+//{
+//    [super viewWillLayoutSubviews];
+//    _viewX = self.view.bounds.size.width/2;
+//
+//    _logo.center = CGPointMake(_viewX, 160);
+//    _user.center = CGPointMake(_viewX, 280);
+//    _pwd.center = CGPointMake(_viewX, 325);
+//
+//    UIToolbar *mdtextfield = [self setInputUIToolbar];
+//    _user.inputAccessoryView = mdtextfield;
+//    _pwd.inputAccessoryView = mdtextfield;
+//
+//
+//    //强制竖屏
+//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+//        SEL selector = NSSelectorFromString(@"setOrientation:");
+//        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+//        [invocation setSelector:selector];
+//        [invocation setTarget:[UIDevice currentDevice]];
+//        int val = UIDeviceOrientationPortrait;
+//        [invocation setArgument:&val atIndex:2];
+//        [invocation invoke];
+//    }
+//}
+
+-(void) login:(id)sender
 {
-    [super viewWillLayoutSubviews];
-    _viewX = self.view.bounds.size.width/2;
+    UIButton *l = (UIButton *)sender;
+    NSString *v = l.titleLabel.text;
     
-    _logo.center = CGPointMake(_viewX, 160);
-    _user.center = CGPointMake(_viewX, 280);
-    _pwd.center = CGPointMake(_viewX, 325);
-    
-    UIToolbar *mdtextfield = [self setInputUIToolbar];
-    _user.inputAccessoryView = mdtextfield;
-    _pwd.inputAccessoryView = mdtextfield;
-    
-    
-    //强制竖屏
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val = UIDeviceOrientationPortrait;
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
+    if([v isEqual:@"正在登陆中..."]){
+        [self showAlert:@"提示" msg:@"正在登陆中...,稍后再试!"];
+        return;
     }
+
+    [self login];
 }
 
 #pragma mark 登陆
@@ -231,7 +307,7 @@ static MLoginViewController *MLoginViewControllerSingle;
 #pragma mark 检查是否登录
 - (void) startCheckLogin
 {
-    //sleep(2);
+    //sleep(4);
     [self->api InfoVersion:^(AFHTTPRequestOperation *operation, id responseObject) {
         //NSLog(@"%@", responseObject);
         [self hudClose];

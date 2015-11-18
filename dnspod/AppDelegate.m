@@ -26,13 +26,12 @@ void uncaughtExceptionHandler(NSException *exception) {
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    
     //设置window属性(在AppDelegate中定义window属性),初始化windows的大小和位置
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
     //初始化ViewController
-    MLoginViewController *c = [MLoginViewController sharedInstance];
+    MLoginViewController *c = [[MLoginViewController alloc] init];
     //设置自定义控制器大小和window相同,位置为(0,0)
     c.view.frame = _window.bounds;
     _window.rootViewController = [[SlideNavigationController sharedInstance] initWithRootViewController:c];
@@ -48,11 +47,14 @@ void uncaughtExceptionHandler(NSException *exception) {
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    //NSLog(@"background");
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    //NSLog(@"fronted");
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

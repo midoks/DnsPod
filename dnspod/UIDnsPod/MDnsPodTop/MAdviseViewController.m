@@ -43,11 +43,6 @@ static MAdviseViewController *MAdviseViewControllerSingle;
     return MAdviseViewControllerSingle;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller
           didFinishWithResult:(MFMailComposeResult)result

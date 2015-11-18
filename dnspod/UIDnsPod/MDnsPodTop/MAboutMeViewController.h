@@ -11,5 +11,4 @@
 
 @interface MAboutMeViewController : MBaseViewController
 
-+(MAboutMeViewController *)sharedInstance;
 @end

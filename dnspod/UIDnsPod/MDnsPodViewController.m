@@ -174,9 +174,6 @@
     }
     
     _selectedDomain = obj;
-    
-
-    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"域名管理"
                                                                              message:@""
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];

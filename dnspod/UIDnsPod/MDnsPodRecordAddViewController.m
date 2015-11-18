@@ -196,7 +196,7 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
     if([value isEqualToString:@"请填写"]){
         value = @"";
     }
-    [self ModRecordCommonValue:MDRECORDNAME value:value notice:@"请输入或修改主机记录" tag:0];
+    [self ModRecordCommonValue:MDRECORDNAME value:value notice:@"请输入或修改主机记录" tag:0 key:MDRECORDNAME];
 }
 
 #pragma mark 修改主机记录值
@@ -206,25 +206,26 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
     if([value isEqualToString:@"请填写"]){
         value = @"";
     }
-    [self ModRecordCommonValue:MDRECORDVALUE value:value notice:@"请输入或修改记录值" tag:1];
+    [self ModRecordCommonValue:MDRECORDVALUE value:value notice:@"请输入或修改记录值" tag:1 key:MDRECORDVALUE];
 }
 
 #pragma mark 修改Mx优先级
 -(void)ModRecordMx
 {
     NSString *value = [_data objectForKey:MDRECORDMX];
-    [self ModRecordCommonValue:MDRECORDMX value:value notice:@"请输入或修改MX优先级" tag:4];
+    [self ModRecordCommonValue:MDRECORDMX value:value notice:@"请输入或修改MX优先级" tag:4 key:MDRECORDMX];
 }
 
 #pragma mark Tll
 -(void)ModRecordTll
 {
     NSString *value = [_data objectForKey:MDRECORDTLL];
-    [self ModRecordCommonValue:MDRECORDTLL value:value notice:@"请输入或修改TLL" tag:5];
+    [self ModRecordCommonValue:MDRECORDTLL value:value notice:@"请输入或修改TLL" tag:5 key:MDRECORDTLL];
 }
 
 #pragma mark 修改record记录
--(void)ModRecordCommonValue:(NSString *)name value:(NSString *)value notice:(NSString *)notice tag:(NSInteger)tag;
+-(void)ModRecordCommonValue:(NSString *)name value:(NSString *)value
+                     notice:(NSString *)notice tag:(NSInteger)tag key:(NSString *)key;
 {
     
     UIAlertController *alertRecord = [UIAlertController alertControllerWithTitle:@"修改记录值"
@@ -235,9 +236,15 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
     }];
     
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        
+        
         NSString *value = alertRecord.textFields.firstObject.text;
+        
+        //NSLog(@"v:%@",value);
+        //NSLog(@"t:%ld", tag);
 
-        [_data setObject:value forKey:MDRECORDVALUE];
+        [_data setObject:value forKey:key];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:tag inSection:0];
         NSArray *path = @[indexPath];
         [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationLeft];
@@ -302,6 +309,7 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
     [self.pvc GetLoadNewData];
 }
 
+#pragma mark - 提交 -
 -(void)submit
 {
     if (_selectedRecord)

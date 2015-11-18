@@ -17,8 +17,11 @@
 @property (nonatomic, strong) UIImageView *logo;
 @property (nonatomic, strong) UITextField *user;
 @property (nonatomic, strong) UITextField *pwd;
+@property (nonatomic, strong) UIButton *loginButton;
 
 
-+(MLoginViewController *)sharedInstance;
+@property (nonatomic, strong) UIButton *touchIdButton;
+@property (nonatomic, strong) UIButton *switchButton;
+
 @end
 

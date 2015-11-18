@@ -39,6 +39,8 @@ typedef void (^alertBlock)();
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg;
 #pragma mark 弹出消息
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg block:(void (^)())block;
+#pragma mark 弹出消息并回调(可以设置时间)
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time block:(void (^)())block;
 #pragma mark 弹出消息(可以设置时间)
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time;
 

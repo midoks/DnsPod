@@ -14,6 +14,7 @@
 #import "MAdviseViewController.h"
 #import "SlideNavigationController.h"
 #import "MUserListViewController.h"
+#import "MSettingViewController.h"
 
 
 @interface MLeftMenuViewController () <UITableViewDelegate, UITableViewDataSource, UIApplicationDelegate>
@@ -56,31 +57,17 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 -(void) viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    //_tableView.frame = self.view.bounds;
     _tableView.frame = CGRectMake(0, 0, self.view.frame.size.width - MENU_DEFAULT_SLIDE_OFFSET,
                                   self.view.frame.size.height);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return 3;
 }
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 20)];
-//    view.backgroundColor = [UIColor clearColor];
-//    return view;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 20;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"p");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"leftMenuCell"];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"leftMenuCell"];
@@ -89,9 +76,9 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
         if([self->file GetMainUser]){
             NSDictionary *_p_user = [self->file GetMainUser][0];
             NSString *user = [_p_user objectForKey:@"user"];
-            username = [NSString stringWithFormat:@"账户信息:\r\n%@", user];
+            username = [NSString stringWithFormat:@"账户:\r\n%@", user];
         }else{
-            username = [NSString stringWithFormat:@"账户信息:\r\n%@", @"获取失败!!"];
+            username = [NSString stringWithFormat:@"账户:\r\n%@", @"获取失败!!"];
         }
         
         switch (indexPath.row)
@@ -104,29 +91,20 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
                 break;
             case 1:
                 cell.imageView.image = [UIImage imageNamed:@"com_icon"];
-                cell.textLabel.text = @"主页域名";
+                cell.textLabel.text = @"主页";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 2:
-                cell.imageView.image = [UIImage imageNamed:@"about_icon"];
-                cell.textLabel.text = @"关于我们";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            case 3:
-                cell.imageView.image = [UIImage imageNamed:@"logout_icon"];
-                cell.textLabel.text = @"注销账户";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-            case 4:
-                cell.imageView.image = [UIImage imageNamed:@"exit_icon"];
-                cell.textLabel.text = @"退出程序";
+                cell.imageView.image = [UIImage imageNamed:@"setting"];
+                cell.textLabel.text = @"设置";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
         }
-
+        
         cell.textLabel.font = [UIFont systemFontOfSize:18.0];
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.backgroundColor = [UIColor clearColor];
+        
     }
     return cell;
 }
@@ -134,7 +112,6 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 0.0;
 }
-
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
@@ -148,10 +125,7 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
 {
     if (indexPath.row == 0) {
         return indexPath;
-        //return nil;
-    }
-    else
-    {
+    } else {
         return indexPath;
     }
 }
@@ -163,19 +137,15 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
     switch (indexPath.row) {
         case 0:[self goUserList];break;
         case 1:[self goMainDomainList];break;
-        case 2:ds = [MAboutMeViewController sharedInstance];break;
-        //case 3:[self sendMailText];return;
-        case 3:[self UserExt];break;
-        case 4:[self AppExt];break;
+        case 2:[self goUserSetting];break;
     }
-    
     if (ds){[self push:ds];}
 }
 
 
 #pragma mark - Private Methods -
 
-#pragma mark 跳页的功能
+#pragma mark - 跳页的功能 -
 - (void)push:(UIViewController *)vc
 {
     [[SlideNavigationController sharedInstance] popToRootAndSwitchToViewController:vc
@@ -183,7 +153,7 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
                                                                      andCompletion:nil];
 }
 
-#pragma mark 跳到域名列表的功能
+#pragma mark - 跳到域名列表的功能 -
 - (void)goMainDomainList
 {
     [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
@@ -192,15 +162,23 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
     }];
 }
 
-#pragma mark 跳到用户列表页
+#pragma mark - 跳到用户列表页 -
 -(void)goUserList
 {
-    //NSLog(@"ee");
     [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
         UIViewController *ds = [[MUserListViewController alloc] init];
         [self push:ds];
     }];
 
+}
+
+#pragma mark - 程序设置 -
+-(void)goUserSetting
+{
+    [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
+        UIViewController *ds = [[MSettingViewController alloc] init];
+        [self push:ds];
+    }];
 }
 
 #pragma mark - 应用退出 -
@@ -210,27 +188,11 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
     
     [UIView animateWithDuration:1.0f animations:^{
         window.alpha = 0;
-        //window.frame = CGRectMake(0, 0, 0, 0);
-        //window.backgroundColor = [UIColor whiteColor];
     } completion:^(BOOL finished) {
         exit(0);
     }];
 }
-
-//用户注销
--(void)UserExt
-{
-    [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
-        [self showAlert:@"你确定注销用户" msg:@"" ok:^{
-            [self clearCookies];
-            [self->file ClearUser];
-            UIViewController* ds = [[MLoginViewController alloc] init];
-            [self push:ds];
-        } fail:^{}];
-    }];
-}
-
-//用户退出
+#pragma mark - 用户退出 -
 -(void)AppExt
 {
     [[SlideNavigationController sharedInstance] closeMenuWithCompletion:^{
@@ -238,15 +200,6 @@ static MLeftMenuViewController *MLeftMenuViewControllerSingle;
             [self exitApplication];
         } fail:^{}];
     }];
-}
-
-//清空所有cookie
--(void)clearCookies
-{    
-    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (NSHTTPCookie *cookie in [cookieJar cookies]) {
-        [cookieJar deleteCookie:cookie];
-    }
 }
 
 @end

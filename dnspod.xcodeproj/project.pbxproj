@@ -13,8 +13,13 @@
 		82153EE41A9EDD3E00390A26 /* list_blue_icons.png in Resources */ = {isa = PBXBuildFile; fileRef = 82153EE31A9EDD3E00390A26 /* list_blue_icons.png */; };
 		82153EE61A9F654C00390A26 /* list_red_icons.png in Resources */ = {isa = PBXBuildFile; fileRef = 82153EE51A9F654C00390A26 /* list_red_icons.png */; };
 		82153EEA1A9F736000390A26 /* dnspoder.png in Resources */ = {isa = PBXBuildFile; fileRef = 82153EE91A9F736000390A26 /* dnspoder.png */; };
+		8219EA6C1BFAB83900110A37 /* MCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 8219EA6B1BFAB83900110A37 /* MCommon.m */; };
 		823235271A3E68A30075B33C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 823235261A3E68A30075B33C /* SystemConfiguration.framework */; };
 		82339A981A2B2F0400B5B04B /* MDnsPodRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82339A971A2B2F0400B5B04B /* MDnsPodRecordViewController.m */; };
+		8233E2141BF96B5100F30EBD /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 8233E2111BF96B5100F30EBD /* setting.png */; };
+		8233E2151BF96B5100F30EBD /* setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8233E2121BF96B5100F30EBD /* setting@2x.png */; };
+		8233E2161BF96B5100F30EBD /* setting@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8233E2131BF96B5100F30EBD /* setting@3x.png */; };
+		8233E21A1BF975E600F30EBD /* MSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8233E2191BF975E600F30EBD /* MSettingViewController.m */; };
 		823780141BF3691B00A217A1 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 823780021BF3691B00A217A1 /* AFHTTPRequestOperation.m */; };
 		823780151BF3691B00A217A1 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 823780041BF3691B00A217A1 /* AFHTTPRequestOperationManager.m */; };
 		823780161BF3691B00A217A1 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 823780061BF3691B00A217A1 /* AFHTTPSessionManager.m */; };
@@ -51,7 +56,9 @@
 		825E1E731AA30EFE00DCFB30 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 825E1E721AA30EFE00DCFB30 /* LaunchScreen.xib */; };
 		826C406A1B9AE3D400C5E4A4 /* MUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 826C40691B9AE3D400C5E4A4 /* MUserListViewController.m */; };
 		8273EEF81B8386AC00677109 /* dnspod_about_me.html in Resources */ = {isa = PBXBuildFile; fileRef = 8273EEF71B8386AC00677109 /* dnspod_about_me.html */; };
+		827C392D1BFAF874009BE5D9 /* login_touch_id.png in Resources */ = {isa = PBXBuildFile; fileRef = 827C392C1BFAF874009BE5D9 /* login_touch_id.png */; };
 		827D57951BC6C9020021ACBE /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 827D57941BC6C9020021ACBE /* libsqlite3.0.tbd */; };
+		828AD89B1BF9BAC2000FF1A3 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 828AD89A1BF9BAC2000FF1A3 /* LocalAuthentication.framework */; };
 		82A979F81A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A979F71A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m */; };
 		82AE30051A5FEF0A00E836CC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AE30041A5FEF0A00E836CC /* MBProgressHUD.m */; };
 		82AF83021A0A59D300D3D484 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AF82FF1A0A59D300D3D484 /* GTMBase64.m */; };
@@ -103,9 +110,16 @@
 		82153EE31A9EDD3E00390A26 /* list_blue_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_blue_icons.png; sourceTree = "<group>"; };
 		82153EE51A9F654C00390A26 /* list_red_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_red_icons.png; sourceTree = "<group>"; };
 		82153EE91A9F736000390A26 /* dnspoder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dnspoder.png; sourceTree = "<group>"; };
+		8219EA6A1BFAB83900110A37 /* MCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCommon.h; sourceTree = "<group>"; };
+		8219EA6B1BFAB83900110A37 /* MCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCommon.m; sourceTree = "<group>"; };
 		823235261A3E68A30075B33C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		82339A961A2B2F0400B5B04B /* MDnsPodRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDnsPodRecordViewController.h; sourceTree = "<group>"; };
 		82339A971A2B2F0400B5B04B /* MDnsPodRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDnsPodRecordViewController.m; sourceTree = "<group>"; };
+		8233E2111BF96B5100F30EBD /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
+		8233E2121BF96B5100F30EBD /* setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting@2x.png"; sourceTree = "<group>"; };
+		8233E2131BF96B5100F30EBD /* setting@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting@3x.png"; sourceTree = "<group>"; };
+		8233E2181BF975E600F30EBD /* MSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSettingViewController.h; sourceTree = "<group>"; };
+		8233E2191BF975E600F30EBD /* MSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSettingViewController.m; sourceTree = "<group>"; };
 		823780011BF3691B00A217A1 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		823780021BF3691B00A217A1 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		823780031BF3691B00A217A1 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -163,7 +177,9 @@
 		826C40681B9AE3D400C5E4A4 /* MUserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUserListViewController.h; sourceTree = "<group>"; };
 		826C40691B9AE3D400C5E4A4 /* MUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUserListViewController.m; sourceTree = "<group>"; };
 		8273EEF71B8386AC00677109 /* dnspod_about_me.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = dnspod_about_me.html; sourceTree = "<group>"; };
+		827C392C1BFAF874009BE5D9 /* login_touch_id.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_touch_id.png; sourceTree = "<group>"; };
 		827D57941BC6C9020021ACBE /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		828AD89A1BF9BAC2000FF1A3 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		82A979F61A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDnsPodRecordAddSelectViewController.h; sourceTree = "<group>"; };
 		82A979F71A44032E00CA5D7E /* MDnsPodRecordAddSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDnsPodRecordAddSelectViewController.m; sourceTree = "<group>"; };
 		82AE30031A5FEF0A00E836CC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -215,6 +231,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				828AD89B1BF9BAC2000FF1A3 /* LocalAuthentication.framework in Frameworks */,
 				827D57951BC6C9020021ACBE /* libsqlite3.0.tbd in Frameworks */,
 				82B6117C1A62821E001A7638 /* MessageUI.framework in Frameworks */,
 				823235271A3E68A30075B33C /* SystemConfiguration.framework in Frameworks */,
@@ -241,6 +258,24 @@
 				820843121A29B2C200B8717E /* DnsPodFile.m */,
 			);
 			path = DnsPodApi;
+			sourceTree = "<group>";
+		};
+		8219EA641BFAB7BA00110A37 /* MCommon */ = {
+			isa = PBXGroup;
+			children = (
+				8219EA6A1BFAB83900110A37 /* MCommon.h */,
+				8219EA6B1BFAB83900110A37 /* MCommon.m */,
+			);
+			path = MCommon;
+			sourceTree = "<group>";
+		};
+		8233E2171BF9743400F30EBD /* MSetting */ = {
+			isa = PBXGroup;
+			children = (
+				8233E2181BF975E600F30EBD /* MSettingViewController.h */,
+				8233E2191BF975E600F30EBD /* MSettingViewController.m */,
+			);
+			path = MSetting;
 			sourceTree = "<group>";
 		};
 		823780001BF3691B00A217A1 /* AFNetworking */ = {
@@ -291,6 +326,7 @@
 		82558BAC19FD20ED0092064B = {
 			isa = PBXGroup;
 			children = (
+				828AD89A1BF9BAC2000FF1A3 /* LocalAuthentication.framework */,
 				827D57941BC6C9020021ACBE /* libsqlite3.0.tbd */,
 				82B6117B1A62821E001A7638 /* MessageUI.framework */,
 				823235261A3E68A30075B33C /* SystemConfiguration.framework */,
@@ -362,6 +398,8 @@
 		82558BF519FD21650092064B /* UIDnsPod */ = {
 			isa = PBXGroup;
 			children = (
+				8219EA641BFAB7BA00110A37 /* MCommon */,
+				8233E2171BF9743400F30EBD /* MSetting */,
 				826C40671B9ACA3A00C5E4A4 /* MUser */,
 				82B611951A639A00001A7638 /* MDnsPodTop */,
 				82558BF819FD21650092064B /* MDnsPodViewController.h */,
@@ -464,6 +502,10 @@
 		82BB695D1A374DDA005B2DE1 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				827C392C1BFAF874009BE5D9 /* login_touch_id.png */,
+				8233E2111BF96B5100F30EBD /* setting.png */,
+				8233E2121BF96B5100F30EBD /* setting@2x.png */,
+				8233E2131BF96B5100F30EBD /* setting@3x.png */,
 				8273EEF71B8386AC00677109 /* dnspod_about_me.html */,
 				825E1E6C1AA307BB00DCFB30 /* login_password.png */,
 				825E1E6D1AA307BB00DCFB30 /* login_password@2x.png */,
@@ -585,6 +627,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8233E2161BF96B5100F30EBD /* setting@3x.png in Resources */,
 				825CE81A1A5D70E00009974A /* blueArrow@2x.png in Resources */,
 				82FB90AD1AA06CFA008AD283 /* info_icon@2x.png in Resources */,
 				82FB90A91AA06B3E008AD283 /* exit_icon@2x.png in Resources */,
@@ -608,6 +651,7 @@
 				825E1E6B1AA3037600DCFB30 /* login_user@2x.png in Resources */,
 				825CE8171A5D70E00009974A /* blackArrow.png in Resources */,
 				82BB695F1A374DF9005B2DE1 /* logo@2x.png in Resources */,
+				8233E2151BF96B5100F30EBD /* setting@2x.png in Resources */,
 				82FB90AB1AA06C34008AD283 /* logout_icon@2x.png in Resources */,
 				824D3C7B1A40743F002D9AC6 /* menu-button@2x.png in Resources */,
 				825E1E671AA301A100DCFB30 /* dnspoder@2x.png in Resources */,
@@ -619,6 +663,8 @@
 				825CE81B1A5D70E00009974A /* grayArrow.png in Resources */,
 				82153EE41A9EDD3E00390A26 /* list_blue_icons.png in Resources */,
 				825CE8181A5D70E00009974A /* blackArrow@2x.png in Resources */,
+				827C392D1BFAF874009BE5D9 /* login_touch_id.png in Resources */,
+				8233E2141BF96B5100F30EBD /* setting.png in Resources */,
 				8273EEF81B8386AC00677109 /* dnspod_about_me.html in Resources */,
 				82FB90AF1AA06DD7008AD283 /* about_icon@2x.png in Resources */,
 			);
@@ -650,7 +696,9 @@
 				823780191BF3691B00A217A1 /* AFURLConnectionOperation.m in Sources */,
 				823780151BF3691B00A217A1 /* AFHTTPRequestOperationManager.m in Sources */,
 				82B611A21A639A00001A7638 /* MBaseViewController.m in Sources */,
+				8233E21A1BF975E600F30EBD /* MSettingViewController.m in Sources */,
 				82B611A11A639A00001A7638 /* MAdviseViewController.m in Sources */,
+				8219EA6C1BFAB83900110A37 /* MCommon.m in Sources */,
 				824D3C7C1A40743F002D9AC6 /* SlideNavigationController.m in Sources */,
 				82DAEE391A4C12DD0030B9B6 /* MGSwipeButton.m in Sources */,
 				820843131A29B2C200B8717E /* DnsPodFile.m in Sources */,
@@ -783,9 +831,9 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = dnspod/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.midoks.dnspod;
 				PRODUCT_NAME = dnspod;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -803,10 +851,10 @@
 					"$(PROJECT_DIR)/dnspod",
 				);
 				INFOPLIST_FILE = dnspod/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.midoks.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.midoks.dnspod;
 				PRODUCT_NAME = dnspod;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
