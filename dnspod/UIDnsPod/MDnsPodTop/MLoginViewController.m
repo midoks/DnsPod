@@ -95,12 +95,11 @@
 #pragma mark - 指纹登陆 -
 -(void)touchIdLogin
 {
-    [MCommon touchConfirm:@"登陆验证" success:^(BOOL success) {
+    [MCommon touchConfirm:@"通过Home健验证已有手机指纹" success:^(BOOL success) {
         if(success){
             [MCommon asynTask:^{
                 [self goDnsPod];
             }];
-            
         }else{
             [MCommon asynTask:^{
                 [self showAlert:@"提示" msg:@"指纹验证失败!" time:1];

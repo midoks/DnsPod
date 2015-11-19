@@ -81,10 +81,10 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     
     if (indexPath.section == 0) {
-       cell.textLabel.text = @"指纹解锁";
+        cell.textLabel.text = @"指纹解锁";
         
         UISwitch *touchId = [[UISwitch alloc] init];
-        touchId.frame = CGRectMake(cell.frame.size.width, fabs(cell.frame.size.height-50), 50, 50);
+        touchId.frame = CGRectMake(self.view.frame.size.width-55, fabs(cell.frame.size.height-50), 50, 50);
         
         BOOL touchIdValue = [MCommon getTouchIdValue];
         touchId.on = touchIdValue;
@@ -105,7 +105,7 @@
     }else{
         cell.textLabel.text = @"test";
     }
-
+    
     return cell;
 }
 
@@ -131,13 +131,14 @@
          didFinishWithResult:(MFMailComposeResult)result
                        error:(NSError *)error
 {
-
+    
     [self dismissViewControllerAnimated:YES completion:^{
         if (result == MFMailComposeResultSent) {
             [self showAlert:@"提示" msg:@"反馈成功!!!"];
-        }else if (result == MFMailComposeResultCancelled){
-            [self showAlert:@"提示" msg:@"你已经取消反馈了!!!"];
         }
+        //        else if (result == MFMailComposeResultCancelled){
+        //            [self showAlert:@"提示" msg:@"你已经取消反馈了!!!"];
+        //        }
     }];
 }
 
@@ -169,7 +170,7 @@
     if (setting) {
         [MCommon touchConfirm:@"开启指纹验证" success:^(BOOL success) {
             if(success){
-                 [MCommon setTouchIdValue:YES];
+                [MCommon setTouchIdValue:YES];
                 [self showAlert:@"提示" msg:@"指纹验证开启成功!"];
             }else{
                 [self showAlert:@"提示" msg:@"指纹验证开启失败!"];

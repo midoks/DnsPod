@@ -595,7 +595,7 @@
 				TargetAttributes = {
 					82558BB419FD20ED0092064B = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = 462EP6445M;
+						DevelopmentTeam = 3BAUN3CGWR;
 					};
 					82558BD019FD20ED0092064B = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -833,7 +833,7 @@
 				INFOPLIST_FILE = dnspod/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.midoks.dnspod;
+				PRODUCT_BUNDLE_IDENTIFIER = com.midoks.dnspoder;
 				PRODUCT_NAME = dnspod;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -854,7 +854,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.midoks.dnspod;
+				PRODUCT_BUNDLE_IDENTIFIER = com.midoks.dnspoder;
 				PRODUCT_NAME = dnspod;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
