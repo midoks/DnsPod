@@ -138,28 +138,6 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-#pragma mark - AlertViewDelegate -
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if([alertView.title isEqual:@"添加用户"] && (buttonIndex == 1))
-    {
-        NSString *userName  = [[alertView textFieldAtIndex:0] text];
-        NSString *userPwd   = [[alertView textFieldAtIndex:1] text];
-        
-        
-        [self addUserData:[userName lowercaseString] userPwd:userPwd];
-    }
-    
-    if ([alertView.title isEqual:@"你确定删除域名:"] && (buttonIndex == 1)) {
-        
-    }
-    
-    
-    //NSLog(@"%@", alertView.title);
-    //NSLog(@"%ld", (long)buttonIndex);
-}
-
-
 
 #pragma mark 添加用户数据
 -(void)addUserData:(NSString *)userName userPwd:(NSString *)userPwd

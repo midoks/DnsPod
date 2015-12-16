@@ -136,6 +136,7 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
 #pragma mark 点击操作
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:[self ModRecord];break;
         case 1:[self ModRecordValue];break;
@@ -147,47 +148,47 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
     }
 }
 
-#pragma mark - UIAlertViewDelegate Methods -
-#pragma mark 执行操作
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *value;
-    //主机记录
-    if([alertView.title isEqualToString:MDRECORDNAME] && (buttonIndex == 1)){
-        value = [[alertView textFieldAtIndex:0] text];
-        [_data setObject:value forKey:MDRECORDNAME];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
-        NSArray *path = @[indexPath];
-        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationLeft];
-    }
-    
-    //记录值
-    if([alertView.title isEqualToString:MDRECORDVALUE] && (buttonIndex == 1)){
-        value = [[alertView textFieldAtIndex:0] text];
-        [_data setObject:value forKey:MDRECORDVALUE];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
-        NSArray *path = @[indexPath];
-        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationLeft];
-    }
-    
-    //MX优先级
-    if([alertView.title isEqualToString:MDRECORDMX] && (buttonIndex == 1)){
-        value = [[alertView textFieldAtIndex:0] text];
-        [_data setObject:value forKey:MDRECORDMX];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
-        NSArray *path = @[indexPath];
-        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationMiddle];
-    }
-    
-    //TLL
-    if([alertView.title isEqualToString:MDRECORDTLL] && (buttonIndex == 1)){
-        value = [[alertView textFieldAtIndex:0] text];
-        [_data setObject:value forKey:MDRECORDTLL];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
-        NSArray *path = @[indexPath];
-        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationMiddle];
-    }
-}
+//#pragma mark - UIAlertViewDelegate Methods -
+//#pragma mark 执行操作
+//-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSString *value;
+//    //主机记录
+//    if([alertView.title isEqualToString:MDRECORDNAME] && (buttonIndex == 1)){
+//        value = [[alertView textFieldAtIndex:0] text];
+//        [_data setObject:value forKey:MDRECORDNAME];
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
+//        NSArray *path = @[indexPath];
+//        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationLeft];
+//    }
+//    
+//    //记录值
+//    if([alertView.title isEqualToString:MDRECORDVALUE] && (buttonIndex == 1)){
+//        value = [[alertView textFieldAtIndex:0] text];
+//        [_data setObject:value forKey:MDRECORDVALUE];
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
+//        NSArray *path = @[indexPath];
+//        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationLeft];
+//    }
+//    
+//    //MX优先级
+//    if([alertView.title isEqualToString:MDRECORDMX] && (buttonIndex == 1)){
+//        value = [[alertView textFieldAtIndex:0] text];
+//        [_data setObject:value forKey:MDRECORDMX];
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
+//        NSArray *path = @[indexPath];
+//        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationMiddle];
+//    }
+//    
+//    //TLL
+//    if([alertView.title isEqualToString:MDRECORDTLL] && (buttonIndex == 1)){
+//        value = [[alertView textFieldAtIndex:0] text];
+//        [_data setObject:value forKey:MDRECORDTLL];
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
+//        NSArray *path = @[indexPath];
+//        [_table reloadRowsAtIndexPaths:path withRowAnimation:UITableViewRowAnimationMiddle];
+//    }
+//}
 
 #pragma mark 修改主机记录
 -(void)ModRecord
@@ -228,16 +229,14 @@ static MDnsPodRecordAddViewController *MDnsPodRecordAddViewControllerSingle;
                      notice:(NSString *)notice tag:(NSInteger)tag key:(NSString *)key;
 {
     
-    UIAlertController *alertRecord = [UIAlertController alertControllerWithTitle:@"修改记录值"
-                                                                         message:@"请输入或修改记录值"
+    UIAlertController *alertRecord = [UIAlertController alertControllerWithTitle:name
+                                                                         message:notice
                                                                   preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
     }];
     
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-        
         
         NSString *value = alertRecord.textFields.firstObject.text;
         

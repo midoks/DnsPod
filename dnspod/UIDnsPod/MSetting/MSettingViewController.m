@@ -66,7 +66,7 @@
     if (section == 0) {
         return 1;
     }else if(section == 1){
-        return 2;
+        return 3;
     } else if (section == 2) {
         return 1;
     }
@@ -94,8 +94,13 @@
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             cell.textLabel.text = @"关于我们";
-        }else if(indexPath.row){
+        }else if(indexPath.row == 1){
             cell.textLabel.text = @"反馈或建议";
+        }else if (indexPath.row == 2){
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+            cell.textLabel.text = @"版本";
+            cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+            //cell.textLabel.text = ;
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.section == 2) {
