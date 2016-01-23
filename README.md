@@ -48,3 +48,7 @@ DNSPod可以为同时有电信、网通、教育网服务器的网站提供智�
 
 ### 感谢
 感谢所有开源的软件
+
+### 下载
+在App Store 搜索 "米帮手" 即能下载
+地址:https://itunes.apple.com/us/app/mi-bang-shou/id1059963031?l=zh&ls=1&mt=8
