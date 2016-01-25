@@ -66,7 +66,7 @@
     if (section == 0) {
         return 1;
     }else if(section == 1){
-        return 3;
+        return 4;
     } else if (section == 2) {
         return 1;
     }
@@ -94,15 +94,19 @@
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             cell.textLabel.text = @"关于我们";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }else if(indexPath.row == 1){
             cell.textLabel.text = @"反馈或建议";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }else if (indexPath.row == 2){
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             cell.textLabel.text = @"版本";
             cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-            //cell.textLabel.text = ;
+        } else if (indexPath.row == 3){
+            cell.textLabel.text = @"去评分";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
     } else if (indexPath.section == 2) {
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.textColor = [UIColor redColor];
@@ -124,6 +128,8 @@
             [self goAboutWe];
         }else if(indexPath.row ==1){
             [self adviseWe];
+        } else if (indexPath.row == 3){
+            [self goAppScore];
         }
     }else if(indexPath.section == 2){
         [self goUserExit];
@@ -194,6 +200,15 @@
         [MCommon setTouchIdValue:NO];
         [self showAlert:@"提示" msg:@"你取消了指纹验证!"];
     }
+}
+
+#pragma mark - 去评分 -
+-(void)goAppScore
+{
+    NSString *url = [NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%d&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8", 1059963031];
+    NSURL *goUrl = [[NSURL alloc] initWithString:url];
+    //NSLog(@"%@",goUrl);
+    [[UIApplication sharedApplication] openURL:goUrl];
 }
 
 #pragma mark - 账户注销 -

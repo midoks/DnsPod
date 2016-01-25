@@ -323,6 +323,7 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hudClose];
+        [_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
         [self showAlert:@"提示" msg:@"网络不畅通" time:3.0f];
     }];
 }
