@@ -179,27 +179,33 @@
     BOOL setting = whichSwitch.isOn;
     
     if (setting) {
-        [MCommon touchConfirm:@"开启指纹验证" success:^(BOOL success) {
-            if(success){
-                [MCommon setTouchIdValue:YES];
-                [self showAlert:@"提示" msg:@"指纹验证开启成功!"];
-            }else{
-                [self showAlert:@"提示" msg:@"指纹验证开启失败!"];
-            }
-            
-            [MCommon asynTask:^{
-                [self.settingTable reloadData];
-            }];
-            
-        } fail:^{
-            [self showAlert:@"提示" msg:@"你的设备不支持!"];
-            [self.settingTable reloadData];
-        }];
-        
-    }else{
+        [MCommon setTouchIdValue:YES];
+    } else {
         [MCommon setTouchIdValue:NO];
-        [self showAlert:@"提示" msg:@"你取消了指纹验证!"];
     }
+    
+//    if (setting) {
+//        [MCommon touchConfirm:@"开启指纹验证" success:^(BOOL success) {
+//            if(success){
+//                [MCommon setTouchIdValue:YES];
+//                [self showAlert:@"提示" msg:@"指纹验证开启成功!"];
+//            }else{
+//                [self showAlert:@"提示" msg:@"指纹验证开启失败!"];
+//            }
+//            
+//            [MCommon asynTask:^{
+//                [self.settingTable reloadData];
+//            }];
+//            
+//        } fail:^{
+//            [self showAlert:@"提示" msg:@"你的设备不支持!"];
+//            [self.settingTable reloadData];
+//        }];
+//        
+//    }else{
+//        [MCommon setTouchIdValue:NO];
+//        [self showAlert:@"提示" msg:@"你取消了指纹验证!"];
+//    }
 }
 
 #pragma mark - 去评分 -

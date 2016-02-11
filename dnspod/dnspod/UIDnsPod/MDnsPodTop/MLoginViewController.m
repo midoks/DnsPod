@@ -306,12 +306,19 @@
 #pragma mark 检查是否登录
 - (void) startCheckLogin
 {
+    [_loginButton setTitle:@"正在登陆中..." forState:UIControlStateNormal];
+    [_user setEnabled:false];
+    [_pwd setEnabled:false];
+    
     //sleep(4);
     [self->api InfoVersion:^(AFHTTPRequestOperation *operation, id responseObject) {
         //NSLog(@"%@", responseObject);
         [self hudClose];
         NSString * i = [[responseObject objectForKey:@"status"] objectForKey:@"code"];
         NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
+        
+        [_user setEnabled:true];
+        [_pwd setEnabled:true];
         
         if (![self DTokenHandle:responseObject success:@selector(startCheckLogin)]) {
             if([i isEqual: @"1"]){
@@ -323,7 +330,11 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hudClose];
+        
         [_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
+        [_user setEnabled:true];
+        [_pwd setEnabled:true];
+        
         [self showAlert:@"提示" msg:@"网络不畅通" time:3.0f];
     }];
 }
