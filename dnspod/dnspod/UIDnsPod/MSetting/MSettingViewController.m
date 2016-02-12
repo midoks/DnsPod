@@ -155,7 +155,7 @@
 
 #pragma mark - Private Methods -
 
-#pragma mark - 关于我们 -
+#pragma mark 关于我们
 -(void)goAboutWe
 {
     MAboutMeViewController *ds = [[MAboutMeViewController alloc] init];
@@ -166,13 +166,19 @@
 -(void) adviseWe {
     MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
     mail.mailComposeDelegate = self;
-    [mail setToRecipients:[NSArray arrayWithObject:@"midoks@163.com"]];
-    [mail setSubject:@"米帮手-意见反馈"];
-    [mail setMessageBody:@"" isHTML:NO];
-    [self presentViewController:mail animated:YES completion:^{}];
+    
+    if (mail.isBeingPresented) {
+        
+        [mail setToRecipients:[NSArray arrayWithObject:@"midoks@163.com"]];
+        [mail setSubject:@"米帮手-意见反馈"];
+        [mail setMessageBody:@"" isHTML:NO];
+        [self presentViewController:mail animated:YES completion:^{}];
+    } else {
+        //NSLog(@"dd");
+    }
 }
 
-#pragma mark - TouchID -
+#pragma mark TouchID
 -(void) touchIDValidate:(id)sender
 {
     UISwitch * whichSwitch = (UISwitch *)sender;
@@ -184,28 +190,28 @@
         [MCommon setTouchIdValue:NO];
     }
     
-//    if (setting) {
-//        [MCommon touchConfirm:@"开启指纹验证" success:^(BOOL success) {
-//            if(success){
-//                [MCommon setTouchIdValue:YES];
-//                [self showAlert:@"提示" msg:@"指纹验证开启成功!"];
-//            }else{
-//                [self showAlert:@"提示" msg:@"指纹验证开启失败!"];
-//            }
-//            
-//            [MCommon asynTask:^{
-//                [self.settingTable reloadData];
-//            }];
-//            
-//        } fail:^{
-//            [self showAlert:@"提示" msg:@"你的设备不支持!"];
-//            [self.settingTable reloadData];
-//        }];
-//        
-//    }else{
-//        [MCommon setTouchIdValue:NO];
-//        [self showAlert:@"提示" msg:@"你取消了指纹验证!"];
-//    }
+    //    if (setting) {
+    //        [MCommon touchConfirm:@"开启指纹验证" success:^(BOOL success) {
+    //            if(success){
+    //                [MCommon setTouchIdValue:YES];
+    //                [self showAlert:@"提示" msg:@"指纹验证开启成功!"];
+    //            }else{
+    //                [self showAlert:@"提示" msg:@"指纹验证开启失败!"];
+    //            }
+    //
+    //            [MCommon asynTask:^{
+    //                [self.settingTable reloadData];
+    //            }];
+    //
+    //        } fail:^{
+    //            [self showAlert:@"提示" msg:@"你的设备不支持!"];
+    //            [self.settingTable reloadData];
+    //        }];
+    //
+    //    }else{
+    //        [MCommon setTouchIdValue:NO];
+    //        [self showAlert:@"提示" msg:@"你取消了指纹验证!"];
+    //    }
 }
 
 #pragma mark - 去评分 -
