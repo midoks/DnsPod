@@ -189,8 +189,7 @@
     
     _pwd = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 45.0f)];
     _pwd.center = CGPointMake(_viewX, _user.frame.origin.y + _user.frame.size.height + 45.0f/2 + 1);
-    _pwd.keyboardType = UIKeyboardTypeEmailAddress;
-    //_pwd.keyboardAppearance = UIKeyboardAppearanceLight;
+    _pwd.keyboardType = UIKeyboardTypeDefault;
     _pwd.borderStyle = UITextBorderStyleNone;
     _pwd.font = [UIFont systemFontOfSize:14.0f];
     _pwd.backgroundColor = [UIColor whiteColor];
