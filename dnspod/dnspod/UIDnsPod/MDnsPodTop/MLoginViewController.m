@@ -329,6 +329,7 @@
         NSString * i = [[responseObject objectForKey:@"status"] objectForKey:@"code"];
         NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
         
+        [_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
         [_user setEnabled:true];
         [_pwd setEnabled:true];
         
@@ -337,6 +338,7 @@
                 [self->file AddUser:[self->api getUserName] password:[self->api getUserPwd] isMain:@"1"];
                 [self showAlert:@"登录成功" time:1.0 ok:@selector(goDnsPod)];
             }else{
+                
                 [self showAlert:@"提示" msg:msg time:3.0f];
             }
         }
