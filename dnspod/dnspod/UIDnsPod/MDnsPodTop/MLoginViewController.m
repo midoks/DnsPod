@@ -18,6 +18,9 @@
 @property (nonatomic, assign) CGFloat KeyboardHeight;
 @property (nonatomic, assign) CGFloat viewX;
 
+//保存当前编辑框的状态
+@property (nonatomic, strong) UITextField *currentTextField;
+
 @end
 
 @implementation MLoginViewController
@@ -49,7 +52,18 @@
     self.view.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1];
     self.title = @"米帮手";
     
+    [self initViewConfig];
     
+    //打印app的文件目录,对调试有好处
+    //NSLog(@"%@", NSHomeDirectory());
+    
+    //监听键盘高度
+    [self registerForKeyboardNotifications];
+}
+
+#pragma mark 初始化视图设置
+-(void)initViewConfig
+{
     UIBarButtonItem  *nullButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     self.navigationItem.rightBarButtonItem = nullButton;
     self.navigationItem.leftBarButtonItem = nullButton;
@@ -61,9 +75,7 @@
     } else {
         [self initView];
     }
-    
-    //打印app的文件目录,对调试有好处
-    //NSLog(@"%@", NSHomeDirectory());
+
 }
 
 #pragma mark - initTouchID -
@@ -177,7 +189,8 @@
     
     _pwd = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 45.0f)];
     _pwd.center = CGPointMake(_viewX, _user.frame.origin.y + _user.frame.size.height + 45.0f/2 + 1);
-    _pwd.keyboardType = UIKeyboardTypeNamePhonePad;
+    _pwd.keyboardType = UIKeyboardTypeEmailAddress;
+    //_pwd.keyboardAppearance = UIKeyboardAppearanceLight;
     _pwd.borderStyle = UITextBorderStyleNone;
     _pwd.font = [UIFont systemFontOfSize:14.0f];
     _pwd.backgroundColor = [UIColor whiteColor];
@@ -218,7 +231,7 @@
     
     
     //监控键盘的高度
-    _KeyboardHeight = 264;
+    _KeyboardHeight = 293;
 }
 
 #pragma mark - 通过颜色生成图片 -
@@ -350,29 +363,41 @@
 //-(void)register
 - (void) registerForKeyboardNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
 }
 
-- (void) keyboardWasShown:(NSNotification *) notif
+- (void) keyboardWasShow:(NSNotification *) notif
 {
     NSDictionary *info = [notif userInfo];
     NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
     CGSize keyboardSize = [value CGRectValue].size;
     _KeyboardHeight = keyboardSize.height;
-    NSLog(@"keyBoardHeight:%f", keyboardSize.height);  //216
-    ///keyboardWasShown = YES;
+    //NSLog(@"keyBoardHeight:%f", keyboardSize.height);  //293
+    //self.view.frame = CGRectMake(0.0f, -_KeyboardHeight, self.view.frame.size.width, self.view.frame.size.height);
+    //NSLog(@"2");
+    
+    CGRect frame = _currentTextField.frame;
+    float offset = frame.origin.y + frame.size.height - (self.view.frame.size.height - _KeyboardHeight);//键盘高度216
+    //NSLog(@"frame.origin.y:%f", frame.origin.y);
+    //NSLog(@"offset:%f", offset);
+    
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:0.1f];
+    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
+    if(offset > 0){
+        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
+    }
+    [UIView commitAnimations];
 }
 - (void) keyboardWasHidden:(NSNotification *) notif
 {
-    NSDictionary *info = [notif userInfo];
-    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGSize keyboardSize = [value CGRectValue].size;
-    _KeyboardHeight = keyboardSize.height;
-    //NSLog(@"keyboardWasHidden keyBoard:%f", keyboardSize.height);
-    // keyboardWasShown = NO;
-    
+//    NSDictionary *info = [notif userInfo];
+//    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+//    CGSize keyboardSize = [value CGRectValue].size;
+//    _KeyboardHeight = keyboardSize.height;
+//    NSLog(@"keyboardWasHidden keyBoard:%f", keyboardSize.height);
 }
 
 
@@ -395,25 +420,14 @@
 //开始编辑输入框的时候，软键盘出现，执行此事件
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    //NSLog([[UIDevice currentDevice] name]); // 获取设备的名称
-    //NSLog([[UIDevice currentDevice] uniqueIdentifier]); //获取GUID 唯一标识符
-    //NSLog([[UIDevice currentDevice] systemName]); //获取系统名称
-    //NSLog([[UIDevice currentDevice] systemVersion]); // 版本号
+    //NSLog(@"1");
+    _currentTextField = textField;
     
+    //NSLog(@"%@",[[UIDevice currentDevice] name]); // 获取设备的名称
+    //NSLog(@"%@",[[UIDevice currentDevice] uniqueIdentifier]); //获取GUID 唯一标识符
+    //NSLog(@"%@",[[UIDevice currentDevice] systemName]); //获取系统名称
+    //NSLog(@"%@",[[UIDevice currentDevice] systemVersion]); // 版本号
     //NSLog(@"%@", [[UIDevice currentDevice] systemVersion]);
-    //NSLog(@"_KeyboardHeight:%f", _KeyboardHeight);
-    CGRect frame = textField.frame;
-    float offset = frame.origin.y + 42.f - (self.view.frame.size.height - _KeyboardHeight);//键盘高度216
-    //NSLog(@"frame.origin.y:%f", frame.origin.y);
-    //NSLog(@"offset:%f", offset);
-    
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:0.3f];
-    //将视图的Y坐标向上移动offset个单位，以使下面腾出地方用于软键盘的显示
-    if(offset > 0){
-        self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
-    }
-    [UIView commitAnimations];
 }
 
 #pragma mark - 自定义UIToolbar -
