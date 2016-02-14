@@ -26,6 +26,10 @@
 
 //UIRefreshControl
 @property (nonatomic, strong) UIRefreshControl *pullRefreshControll;
+
+//添加域名窗口
+@property (nonatomic, strong) UIAlertController *domainAdd;
+
 @end
 
 @implementation MDnsPodViewController
@@ -55,9 +59,52 @@
     
     //下拉刷新
     [self setupRefresh];
+    
+    //添加域名窗口
+    [self initDomainAddView];
 }
 
-
+#pragma mark - 添加域名窗口 -
+-(void)initDomainAddView {
+    _domainAdd = [UIAlertController alertControllerWithTitle:@"添加域名"
+                                                     message:@"请输入你要添加的域名(不带www) 例:cachecha.com"
+                                              preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        //NSLog(@"fail");
+    }];
+    
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSString * domainValue = _domainAdd.textFields.firstObject.text;
+        
+        if ([domainValue isEqual:@""]) {
+            [self showAlert:@"提示" msg:@"添加域名不能为空!!!"];
+            return;
+        }
+        
+        [self->api DomainCreate:domainValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            if([responseObject objectForKey:@"domain"]){
+                [self showAlert:@"添加成功" msg:[[responseObject objectForKey:@"domain"] objectForKey:@"domain"] time:3.0f];
+            }else if ([responseObject objectForKey:@"status"]){
+                NSString *errMsg = [NSString stringWithFormat:@"添加失败:%@", [[responseObject objectForKey:@"status"] objectForKey:@"message"]];
+                [self showAlert:@"提示" msg:errMsg time:5.0f];
+            }
+            [self GetLoadNewData];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self showAlert:@"提示" msg:@"网络不畅通" time:3.0f];
+        }];
+        
+    }];
+    
+    [_domainAdd addAction:cancal];
+    [_domainAdd addAction:confirm];
+    
+    [_domainAdd addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"域名(cachecha.com)";
+    }];
+}
 
 #pragma mark 下拉刷新
 -(void)setupRefresh{
@@ -105,7 +152,7 @@
         [_table reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         fail();
-        [self showAlert:@"提示" msg:@"网络不畅通,下拉重新获取!"];
+        [self showAlert:@"提示" msg:@"网络不畅通,下拉重新获取!" time:1.5f block:nil];
     }];
 }
 
@@ -184,7 +231,7 @@
         [self showAlert:@"你确定删除域名:" msg:[_selectedDomain objectForKey:@"name"] ok:^{
             [self hudWaitProgress:@selector(alertDeleteDomain)];
         } fail:^{}];
-
+        
     }];
     
     
@@ -212,7 +259,7 @@
     
     //域名信息
     UIAlertAction *domainInfo = [UIAlertAction actionWithTitle:@"记录信息" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    
+        
         [self DomainInfo];
     }];
     
@@ -228,7 +275,7 @@
         
     }];
     
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     
     if ([[_selectedDomain objectForKey:@"ext_status"] isEqual:@"dnserror"]) {
         [alertController addAction:deleteDomain];
@@ -334,46 +381,7 @@
 #pragma mark 添加域名
 -(void)AddDomain
 {
-    UIAlertController *alertAdd = [UIAlertController alertControllerWithTitle:@"添加域名"
-                                                                         message:@"请输入你要添加的域名(不带www) 例:cachecha.com"
-                                                                  preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        //NSLog(@"fail");
-    }];
-    
-    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-        NSString * domainValue = alertAdd.textFields.firstObject.text;
-        
-        if ([domainValue isEqual:@""]) {
-            [self showAlert:@"提示" msg:@"添加域名不能为空!!!"];
-            return;
-        }
-        
-        [self->api DomainCreate:domainValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            if([responseObject objectForKey:@"domain"]){
-                [self showAlert:@"添加成功" msg:[[responseObject objectForKey:@"domain"] objectForKey:@"domain"] time:3.0f];
-            }else if ([responseObject objectForKey:@"status"]){
-                NSString *errMsg = [NSString stringWithFormat:@"添加失败:%@", [[responseObject objectForKey:@"status"] objectForKey:@"message"]];
-                [self showAlert:@"提示" msg:errMsg time:5.0f];
-            }
-            [self GetLoadNewData];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [self showAlert:@"提示" msg:@"网络不畅通" time:3.0f];
-        }];
-        
-    }];
-    
-    [alertAdd addAction:cancal];
-    [alertAdd addAction:confirm];
-    
-    [alertAdd addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"域名(cachecha.com)";
-    }];
-    
-    [self presentViewController:alertAdd animated:YES completion:nil];
+    [self presentViewController:_domainAdd animated:YES completion:nil];
 }
 
 @end

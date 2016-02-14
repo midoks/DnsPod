@@ -194,7 +194,7 @@
     [alert addAction:delete];
     
     //取消
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     [alert addAction:cancel];
     
     [self presentViewController:alert animated:YES completion:nil];
