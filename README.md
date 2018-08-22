@@ -33,6 +33,7 @@ DNSPod可以为同时有电信、网通、教育网服务器的网站提供智�
 
 
 ### 软件截图
+
 [![Screenshots-1.png](/document/images/Screenshots-1.png)](/document/images/Screenshots-1.png)
 [![Screenshots-2.png](/document/images/Screenshots-2.png)](/document/images/Screenshots-2.png)
 [![Screenshots-3.png](/document/images/Screenshots-3.png)](/document/images/Screenshots-3.png)
