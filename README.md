@@ -44,7 +44,7 @@ DNSPod可以为同时有电信、网通、教育网服务器的网站提供智�
 - qq:627293072(我不一定在线)
 
 ### 捐助
-[![Screenshots-5.png](/document/images/donate.png)](/document/images/donate.png)
+[![Screenshots-5.png](/document/images/donate.png)](/document/images/donate.png =200x200)
 
 ### 感谢
 感谢所有开源的软件
