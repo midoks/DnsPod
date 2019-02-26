@@ -24,7 +24,9 @@
         NSDictionary *_p_user = [self->file GetMainUser][0];
         NSString *user = [_p_user objectForKey:@"user"];
         NSString *pwd = [_p_user objectForKey:@"pwd"];
-        [self->api setValue:user password:pwd];
+//        NSLog(@"%@:%@", user,pwd);
+//        [self->api setValue:user password:pwd];
+        [self->api setToken:pwd tid:user];
     }
 }
 
@@ -49,7 +51,7 @@
 }
 
 #pragma mark 提示消息,取消或或成功执行block
--(void)showAlert:(NSString *)title msg:(NSString *)msg ok:(void (^)())ok fail:(void (^)())fail
+-(void)showAlert:(NSString *)title msg:(NSString *)msg ok:(void (^)(void))ok fail:(void (^)(void))fail
 {
     UIAlertController *alertDelete = [UIAlertController alertControllerWithTitle:title
                                                                          message:msg
@@ -80,7 +82,7 @@
 }
 
 #pragma mark 提示并调用block
-- (void)showAlert:(NSString *)msg time:(float)time block:(void (^)())block
+- (void)showAlert:(NSString *)msg time:(float)time block:(void (^)(void))block
 {
     [self showAlert:@"提示" msg:msg time:time block:block];
 }
@@ -92,7 +94,7 @@
 }
 
 #pragma mark 弹出消息
-- (void)showAlert:(NSString *)notice msg:(NSString *)msg block:(void (^)())block
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg block:(void (^)(void))block
 {
     [self showAlert:notice msg:msg time:2.0f block:block];
 }
@@ -112,7 +114,7 @@
 
 
 #pragma mark 弹出消息并回调block
-- (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time block:(void (^)())block
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time block:(void (^)(void))block
 {
     callAlertBlock = block;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:notice message:msg preferredStyle:UIAlertControllerStyleAlert];
@@ -132,8 +134,8 @@
 - (void)timerFireMethod:(NSTimer*)theTimer
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        if (callAlertBlock) {
-            callAlertBlock();
+        if (self->callAlertBlock) {
+            self->callAlertBlock();
         }
     }];
 }

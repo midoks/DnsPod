@@ -42,8 +42,8 @@
     self->_email = email;
     self->_pwd = pwd;
 
-    [self setArgs:@"login_email" value:self->_email];
-    [self setArgs:@"login_password" value:self->_pwd];
+//    [self setArgs:@"login_email" value:self->_email];
+//    [self setArgs:@"login_password" value:self->_pwd];
 }
 
 
@@ -87,7 +87,6 @@
 -(void) InfoVersion:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
-    //NSLog(@"%@", _args);
     [_manager POST:@"https://dnsapi.cn/Info.Version"
        parameters:_args
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -104,9 +103,8 @@
           failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
     //AFNetWoring
-    NSDictionary *parameters = @{@"login_email": self->_email,
-                                 @"login_password" : self->_pwd,
-                                 @"format":@"json"};
+    NSString *newToken = [NSString stringWithFormat:@"%@,%@", self->_token_id, self->_token];
+    NSDictionary *parameters = @{@"login_token": newToken,@"format":@"json"};
     [_manager POST:@"https://dnsapi.cn/User.Detail"
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1306,13 +1304,6 @@
            }
      ];
 }
-
-
-
-
-
-
-
 
 
 @end

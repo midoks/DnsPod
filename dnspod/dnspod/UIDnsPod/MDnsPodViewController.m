@@ -141,7 +141,8 @@
     //获取域名数据
     [self->api DomainList:@"all" offset:@"0" length:nil group_id:nil keyword:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"%@", responseObject);
+//        NSLog(@"%@", responseObject);
+//        NSLog(@"%@", [[responseObject objectForKey:@"status"] objectForKey:@"message"]);
         
         NSMutableArray *t = [responseObject objectForKey:@"domains"];
         [self->_domains removeAllObjects];

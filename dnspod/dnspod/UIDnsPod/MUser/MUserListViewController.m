@@ -187,8 +187,8 @@
 -(void)addUser
 {
     
-    UIAlertController *addUser = [UIAlertController alertControllerWithTitle:@"添加用户"
-                                                                     message:@"请输入你要添加的用户和密码"
+    UIAlertController *addUser = [UIAlertController alertControllerWithTitle:@"添加TOKEN"
+                                                                     message:@"请输入你要添加的ID和TOKEN"
                                                               preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancal = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
     }];
@@ -201,11 +201,11 @@
     }];
     
     [addUser addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"请输入账户";
+        textField.placeholder = @"请输入ID";
     }];
     
     [addUser addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"请输入密码";
+        textField.placeholder = @"请输入TOKEN";
         textField.secureTextEntry = true;
     }];
     
@@ -246,11 +246,9 @@
                 [self showAlert:@"提示" msg:@"切换成功" ok:^{
                     [self reloadGetUserData];
                 } fail:^{}];
-                
             }
         }
     }];
-    
 }
 
 //切换当前用户

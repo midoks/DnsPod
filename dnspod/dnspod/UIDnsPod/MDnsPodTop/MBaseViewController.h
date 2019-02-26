@@ -13,7 +13,7 @@
 #import "MBProgressHUD.h"
 
 
-typedef void (^alertBlock)();
+typedef void (^alertBlock)(void);
 
 @interface MBaseViewController : UIViewController
 {
@@ -31,16 +31,16 @@ typedef void (^alertBlock)();
 
 
 #pragma mark 提示消息,取消或或成功执行block
--(void)showAlert:(NSString *)title msg:(NSString *)msg ok:(void (^)())ok fail:(void (^)())fail;
+-(void)showAlert:(NSString *)title msg:(NSString *)msg ok:(void (^)(void))ok fail:(void (^)(void))fail;
 #pragma mark 提示并调用
 - (void)showAlert:(NSString *)msg time:(float)time ok:(SEL)ok;
-- (void)showAlert:(NSString *)msg time:(float)time block:(void (^)())block;
+- (void)showAlert:(NSString *)msg time:(float)time block:(void (^)(void))block;
 #pragma mark 弹出消息
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg;
 #pragma mark 弹出消息
-- (void)showAlert:(NSString *)notice msg:(NSString *)msg block:(void (^)())block;
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg block:(void (^)(void))block;
 #pragma mark 弹出消息并回调(可以设置时间)
-- (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time block:(void (^)())block;
+- (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time block:(void (^)(void))block;
 #pragma mark 弹出消息(可以设置时间)
 - (void)showAlert:(NSString *)notice msg:(NSString *)msg time:(float)time;
 

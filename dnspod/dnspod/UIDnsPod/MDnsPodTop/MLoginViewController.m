@@ -329,7 +329,7 @@
         [self hudClose];
         NSString * i = [[responseObject objectForKey:@"status"] objectForKey:@"code"];
         NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
-        NSLog(@"%@", msg);
+//        NSLog(@"%@", msg);
         [self->_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
         [self->_user setEnabled:true];
         [self->_pwd setEnabled:true];
