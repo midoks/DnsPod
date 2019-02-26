@@ -176,7 +176,7 @@
     _user.inputAccessoryView = mdtextfield;
     _user.backgroundColor = [UIColor whiteColor];
     _user.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _user.placeholder = @"请输入TOKEN_ID";
+    _user.placeholder = @"请输入ID";
     _user.delegate = self;
     [self.view addSubview:_user];
     
@@ -302,7 +302,7 @@
     [self toolbarDone];
     
     if([_c_user isEqual:@""]){
-        [self showAlert:@"提示" msg:@"TokenID不能为空"];
+        [self showAlert:@"提示" msg:@"ID不能为空"];
         return;
     }
     
