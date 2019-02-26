@@ -127,8 +127,8 @@
 -(void) switchLogin
 {
     [self showAlert:@"重新登陆" msg:@"要清空所有信息?" ok:^{
-        [_touchIdButton removeFromSuperview];
-        [_switchButton removeFromSuperview];
+//        [_touchIdButton removeFromSuperview];
+//        [_switchButton removeFromSuperview];
         [self->file ClearUser];
         [MCommon setTouchIdValue:NO];
         [self initView];
@@ -176,7 +176,7 @@
     _user.inputAccessoryView = mdtextfield;
     _user.backgroundColor = [UIColor whiteColor];
     _user.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _user.placeholder = @"请输入你的账户";
+    _user.placeholder = @"请输入TOKEN_ID";
     _user.delegate = self;
     [self.view addSubview:_user];
     
@@ -193,12 +193,12 @@
     _pwd.borderStyle = UITextBorderStyleNone;
     _pwd.font = [UIFont systemFontOfSize:14.0f];
     _pwd.backgroundColor = [UIColor whiteColor];
-    _pwd.placeholder = @"请输入你的密码";
+    _pwd.placeholder = @"请输入TOKEN";
     _pwd.leftViewMode = UITextFieldViewModeAlways;
     _pwd.clearButtonMode = UITextFieldViewModeWhileEditing;
     _pwd.leftView = login_password;
     _pwd.inputAccessoryView = mdtextfield;
-    _pwd.secureTextEntry = YES;
+//    _pwd.secureTextEntry = YES;
     _pwd.delegate = self;
     [self.view addSubview:_pwd];
     
@@ -302,40 +302,41 @@
     [self toolbarDone];
     
     if([_c_user isEqual:@""]){
-        [self showAlert:@"提示" msg:@"用户名不能为空"];
+        [self showAlert:@"提示" msg:@"TokenID不能为空"];
         return;
     }
     
     if([_c_pwd isEqual:@""]){
-        [self showAlert:@"提示" msg:@"密码不能为空"];
+        [self showAlert:@"提示" msg:@"Token不能为空"];
         return;
     }
     
-    [self->api setValue:_c_user password:_c_pwd];
+//    [self->api setValue:_c_user password:_c_pwd];
+    [self->api setToken:_c_pwd tid:_c_user];
+    
     [self hudWaitProgress:@selector(startCheckLogin)];
+    [_user setEnabled:false];
+    [_pwd setEnabled:false];
+    [_loginButton setTitle:@"正在登陆中..." forState:UIControlStateNormal];
 }
 
 #pragma mark 检查是否登录
 - (void) startCheckLogin
 {
-    [_loginButton setTitle:@"正在登陆中..." forState:UIControlStateNormal];
-    [_user setEnabled:false];
-    [_pwd setEnabled:false];
-    
     //sleep(4);
     [self->api InfoVersion:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //NSLog(@"%@", responseObject);
+        
         [self hudClose];
         NSString * i = [[responseObject objectForKey:@"status"] objectForKey:@"code"];
         NSString *msg = [[responseObject objectForKey:@"status"] objectForKey:@"message"];
-        
-        [_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
-        [_user setEnabled:true];
-        [_pwd setEnabled:true];
+        NSLog(@"%@", msg);
+        [self->_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
+        [self->_user setEnabled:true];
+        [self->_pwd setEnabled:true];
         
         if (![self DTokenHandle:responseObject success:@selector(startCheckLogin)]) {
             if([i isEqual: @"1"]){
-                [self->file AddUser:[self->api getUserName] password:[self->api getUserPwd] isMain:@"1"];
+                [self->file AddUser:[self->api getTokenID] password:[self->api getToken] isMain:@"1"];
                 [self showAlert:@"登录成功" time:1.0 ok:@selector(goDnsPod)];
             }else{
                 
@@ -345,9 +346,9 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self hudClose];
         
-        [_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
-        [_user setEnabled:true];
-        [_pwd setEnabled:true];
+        [self->_loginButton setTitle:@"登陆" forState:UIControlStateNormal];
+        [self->_user setEnabled:true];
+        [self->_pwd setEnabled:true];
         
         [self showAlert:@"提示" msg:@"网络不畅通" time:3.0f];
     }];

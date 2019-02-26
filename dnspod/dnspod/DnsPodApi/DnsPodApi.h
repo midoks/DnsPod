@@ -14,6 +14,8 @@
 {
     NSString *_email;
     NSString *_pwd;
+    NSString *_token;
+    NSString *_token_id;
     
     //url对象
     AFHTTPRequestOperationManager *_manager;
@@ -25,10 +27,16 @@
 #pragma mark - 初始化
 #pragma mark 初始化账户和密码
 - (void) setValue:(NSString *)email  password:(NSString *)pwd;
+- (void) setToken:(NSString *)token tid:(NSString *)tid;
 #pragma mark 获取当前用户名
 -(NSString*)getUserName;
 #pragma mark 获取当前用户密码
 -(NSString*)getUserPwd;
+#pragma mark 获取当前TokenID
+-(NSString*)getTokenID;
+#pragma mark 获取当前Token
+-(NSString*)getToken;
+
 #pragma mark 设置POST参数
 - (void) setArgs:(NSString *)key value:(NSString *)value;
 

@@ -76,7 +76,7 @@
     
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        NSString * domainValue = _domainAdd.textFields.firstObject.text;
+        NSString * domainValue = self->_domainAdd.textFields.firstObject.text;
         
         if ([domainValue isEqual:@""]) {
             [self showAlert:@"提示" msg:@"添加域名不能为空!!!"];
@@ -136,20 +136,22 @@
 
 
 #pragma mark 加载数据
--(void) reloadDomainListData:(void (^)())ok fail:(void (^)())fail
+-(void) reloadDomainListData:(void (^)(void))ok fail:(void (^)(void))fail
 {
     //获取域名数据
     [self->api DomainList:@"all" offset:@"0" length:nil group_id:nil keyword:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        NSLog(@"%@", responseObject);
+        
         NSMutableArray *t = [responseObject objectForKey:@"domains"];
-        [_domains removeAllObjects];
-        [_domains addObjectsFromArray:t];
+        [self->_domains removeAllObjects];
+        [self->_domains addObjectsFromArray:t];
         
         ok();
-        if ([_domains count] < 1){
+        if ([self->_domains count] < 1){
             [self showAlert:@"提示" msg:@"没有域名,添加域名!"];
         }
-        [_table reloadData];
+        [self->_table reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         fail();
         [self showAlert:@"提示" msg:@"网络不畅通,下拉重新获取!" time:1.5f block:nil];
@@ -228,7 +230,7 @@
     
     UIAlertAction *deleteDomain = [UIAlertAction actionWithTitle:@"删除域名" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        [self showAlert:@"你确定删除域名:" msg:[_selectedDomain objectForKey:@"name"] ok:^{
+        [self showAlert:@"你确定删除域名:" msg:[self->_selectedDomain objectForKey:@"name"] ok:^{
             [self hudWaitProgress:@selector(alertDeleteDomain)];
         } fail:^{}];
         
@@ -238,12 +240,12 @@
     //域名记录
     UIAlertAction *recordList = [UIAlertAction actionWithTitle:@"记录管理" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        NSString *ext_status = [_selectedDomain objectForKey:@"ext_status"];
+        NSString *ext_status = [self->_selectedDomain objectForKey:@"ext_status"];
         if ([@"dnserror" isEqualToString:ext_status] || [@"notexist" isEqualToString:ext_status]) {
             [self DomainInfo];
         }else{
             MDnsPodRecordViewController *ds = [[MDnsPodRecordViewController alloc] init];
-            ds.selectedDomain = _selectedDomain;
+            ds.selectedDomain = self->_selectedDomain;
             [[SlideNavigationController sharedInstance] pushViewController:ds animated:YES];
         }
     }];
@@ -252,7 +254,7 @@
     UIAlertAction *domainLog = [UIAlertAction actionWithTitle:@"记录日志" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         MDnsPodLogViewController *ds = [MDnsPodLogViewController sharedInstance];
-        ds.selectedDomain = _selectedDomain;
+        ds.selectedDomain = self->_selectedDomain;
         [[SlideNavigationController sharedInstance] pushViewController:ds animated:YES];
         
     }];

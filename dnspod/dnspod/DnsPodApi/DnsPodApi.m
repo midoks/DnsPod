@@ -24,7 +24,7 @@
         self->_manager = [[AFHTTPRequestOperationManager alloc] init];
         //设置格式
         _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-        [_manager.requestSerializer setValue:@"DNSPOD DDNS IOS Client/1.0.1(midoks@163.com)" forHTTPHeaderField:@"User-Agent"];
+        [_manager.requestSerializer setValue:@"DNSPOD DDNS IOS Client/2.0.1(midoks@163.com)" forHTTPHeaderField:@"User-Agent"];
         //[_manager.requestSerializer setValue:@"application/json; charset=utf-8;" forHTTPHeaderField:@"Content-Type"];
         //_manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"utf-8"];
         
@@ -46,6 +46,16 @@
     [self setArgs:@"login_password" value:self->_pwd];
 }
 
+
+#pragma  mark 初始化
+-(void)setToken:(NSString *)token tid:(NSString *)tid
+{
+    self->_token = token;
+    self->_token_id = tid;
+    NSString *newToken = [NSString stringWithFormat:@"%@,%@", tid,token];
+    [self setArgs:@"login_token" value:newToken];
+}
+
 #pragma mark 获取当前用户名
 -(NSString*)getUserName{
     return self->_email;
@@ -54,6 +64,17 @@
 #pragma mark 获取当前用户密码
 -(NSString*)getUserPwd{
     return  self->_pwd;
+}
+
+
+#pragma mark 获取当前TokenID
+-(NSString*)getTokenID{
+    return self->_token_id;
+}
+
+#pragma mark 获取当前Token
+-(NSString*)getToken{
+    return self->_token;
 }
 
 #pragma mark 设置POST参数
